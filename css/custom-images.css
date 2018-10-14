@@ -1,0 +1,87 @@
+/*
+ * Classe auxiliar que permite adicionar novos campos de imagem a posts e custom types
+ * Author: Darren Krape
+ * Edited by: Angelo Santos/Foster
+ */
+
+#cpi_meta_box { overflow: hidden; }
+#cpi,
+.container-cpi { margin-left: -6px; margin-right: -6px; margin-bottom: 0; overflow: hidden; }
+#cpi .cpi-upload,
+.container-cpi .cpi-upload { float: left; width: 31.333%; width: -webkit-calc(33.333% - 12px); width: calc(33.333% - 12px); margin: 0 6px 12px 6px; -webkit-box-sizing: border-box; box-sizing: border-box; }
+#cpi .cpi-upload-header,
+.container-cpi .cpi-upload-header { font-style: normal; font-weight: bold; margin: 0; padding: 5px 8px 8px; }
+#cpi .cpi-upload-thumbnail,
+.container-cpi .cpi-upload-thumbnail { -webkit-box-sizing: border-box; box-sizing: border-box; font-family: 'dashicons'; background-color: #fff; min-height: 150px; max-height: 300px; height: auto; margin: 6px auto; text-align: center; width: 97%; width: -webkit-calc(100% - 12px); width: calc(100% - 12px); overflow: hidden; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; border: 1px solid #ddd; -webkit-border-radius: 3px; border-radius: 3px; position: relative;}
+#cpi .cpi-upload-thumbnail:before,
+.container-cpi .cpi-upload-thumbnail:before { content: '\f128'; position: absolute; font-size: 70px; line-height: 70px; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: 70px; height: 70px; color: #000; opacity: 0.1; }
+#cpi .cpi-button,
+.container-cpi .cpi-button { margin: 6px; float: left; width: 99%; width: -webkit-calc(100% - 12px)!important; width: calc(100% - 12px)!important; }
+#cpi .cpi-upload-button,
+.container-cpi .cpi-upload-button{ display: block; }
+#cpi .cpi-upload-clear,
+.container-cpi .cpi-upload-clear{ display: none; }
+#cpi .cpi-upload.active .cpi-upload-clear,
+.container-cpi .cpi-upload.active .cpi-upload-clear{ display: block; }
+#cpi .cpi-upload.active .cpi-upload-button,
+.container-cpi .cpi-upload.active .cpi-upload-button{ display: none; }
+
+/* Preview */
+#cpi .cpi-upload.active .cpi-upload-thumbnail,
+.container-cpi .cpi-upload.active .cpi-upload-thumbnail { position: relative; font-family: 'dashicons'; }
+#cpi .cpi-upload.active .cpi-upload-thumbnail:before,
+.container-cpi .cpi-upload.active .cpi-upload-thumbnail:before { content: '\f211'; opacity: 0; cursor: pointer; position: absolute; top: -10px; right: 10px; color: #fff; font-size: 22px; line-height: 22px; padding: 5px; background-color: rgba(0, 0, 0, 0.5); -webkit-transition: 0.2s all linear; transition: 0.2s all linear; -webkit-border-radius: 3px; border-radius: 3px; z-index: 300; bottom: inherit; left: inherit; width: 30px; height: 22px; }
+#cpi .cpi-upload.active .cpi-upload-thumbnail img,
+.container-cpi .cpi-upload.active .cpi-upload-thumbnail img { cursor: pointer; }
+#cpi .cpi-upload.active:hover .cpi-upload-thumbnail:before,
+.container-cpi .cpi-upload.active:hover .cpi-upload-thumbnail:before { opacity: 1; top: 10px; }
+
+.fs-preview-img{ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; background-color: rgba(0, 0, 0, 0.7); z-index: 999999; display: none; }
+.fs-preview-img.active{ display: block; -webkit-animation: 0.4s fadeIn linear; animation: 0.4s fadeIn linear; }
+.fs-preview-img a{ position: absolute; top: 20px; right: 20px; color: #fff; text-decoration: none; font-size: 40px; font-weight: 100; }
+.fs-preview-img img{ position: absolute; top: 0; right: 0; bottom: 0; left: 0; margin: auto; width: auto; max-width: 90%; max-width: -webkit-calc(100% - 40px); max-width: calc(100% - 40px); height: auto; max-height: 90%; max-height: -webkit-calc(100% - 40px); max-height: calc(100% - 40px); }
+
+/* Tela de edição de taxonomies */
+table .form-field #cpi,
+table .form-field .container-cpi,
+.form-field #cpi,
+.form-field .container-cpi{ margin-top: 0; }
+table .form-field #cpi .cpi-upload-thumbnail,
+table .form-field .container-cpi .cpi-upload-thumbnail,
+.form-field #cpi .cpi-upload-thumbnail,
+.form-field .container-cpi .cpi-upload-thumbnail{ margin: 0; }
+table .form-field #cpi .cpi-button,
+table .form-field .container-cpi .cpi-button,
+.form-field #cpi .cpi-button,
+.form-field .container-cpi .cpi-button{ margin-left: 0; margin-right: 0; }
+table .form-field #cpi .cpi-upload,
+table .form-field .container-cpi .cpi-upload{ width: 32.333%; width: -webkit-calc(33.333% - 12px); width: calc(33.333% - 12px); }
+.form-field #cpi .cpi-upload,
+.form-field .container-cpi .cpi-upload{ width: 97%; width: -webkit-calc(100% - 12px); width: calc(100% - 12px); }
+
+@media screen and (max-width: 1120px){
+    #cpi .cpi-upload,
+    .container-cpi .cpi-upload,
+    table .form-field #cpi .cpi-upload,
+    table .form-field .container-cpi .cpi-upload{ width: 48%; width: -webkit-calc(50% - 12px); width: calc(50% - 12px); }
+}
+
+@media screen and (max-width: 480px){
+    #cpi .cpi-upload,
+    .container-cpi .cpi-upload,
+    table .form-field #cpi .cpi-upload,
+    table .form-field .container-cpi .cpi-upload{ width: 97%; width: -webkit-calc(100% - 12px); width: calc(100% - 12px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+/*Corrige problema com imagens grandes nas telas de taxonomies */
+.term-php .cpi-upload-thumbnail img { max-width: 100%; height: auto; display: block; }

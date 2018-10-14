@@ -1,0 +1,1 @@
+{"version":3,"sources":["base/general.styl","style.css"],"names":[],"mappings":"AAAA,EACI,SAAA,CCIH","file":"style.css","sourcesContent":["* {\n    padding: 0;\n}","/**\n * Estilização do app\n */\n* {\n  padding: 0;\n}\n"]}
