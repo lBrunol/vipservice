@@ -13,47 +13,63 @@
  */
 
 get_header();
+
+$banners = new WP_Query( array(
+	'post_type' => 'banners',
+	'posts_per_page' => 50,
+	'meta_query' => array(
+		'relation' => 'AND',
+		array(
+			'key' => 'banner_active',
+			'value' => 'true',
+			'compare' => '='
+		)
+	)
+) );
+
 ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+<section>
+	<?php 
+		if ( $banners -> have_posts() ) : 
+			$banners -> the_post();
+	?>
+		<div class="owl-carousel main-banner">
+			<?php foreach( $banners -> posts as $banner ) : 
+				$imagem = wp_get_attachment_image_src( get_post_thumbnail_id( $banner -> ID ), 'full' );
+				$nova_guia = !empty( get_post_meta( $banner -> ID, 'banner_target', true ) ) ? '_blank' : '_self';
+				$link = get_post_meta( $banner -> ID, 'banner_link', true );
+    			$position = get_post_meta( $banner -> ID, 'banner_position', true);
+    			// if ( $position == 'principal' ) :
+			?>
+				<div class="item">
+					<?php if ( !empty( $link ) ) : ?>
+						<a href="<?php echo $link; ?>" target="<?php echo $nova_guia; ?>">
+					<?php endif; ?>
 
-		<?php
-		if ( have_posts() ) :
+					<img src="<?php echo $imagem[0]; ?>" alt="<?php echo get_the_title(); ?>" class="js-img-responsive img-responsive image" data-img-default="<?php echo $imagem[0]; ?>" />
 
-			if ( is_home() && ! is_front_page() ) :
-				?>
-				<header>
-					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-				</header>
-				<?php
-			endif;
-
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
-
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_type() );
-
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
-		?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
+					<?php if ( !empty( $link ) ) : ?>
+						</a>
+					<?php endif; ?>
+				</div>
+				<?php /*endif;*/ endforeach; ?>
+		</div>
+	<?php endif; ?>
+</section>
 <?php
-get_sidebar();
 get_footer();
+?>
+<script>
+	$(function(){
+		$('.owl-carousel').owlCarousel({
+			responsive: {
+				0: {
+					items: 1
+				}
+			},
+			dots: true,
+			nav: false
+		});
+	});
+</script>

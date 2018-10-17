@@ -1,4 +1,14 @@
 <?php
+
+    function theme_get_custom_logo(){
+        $id = get_theme_mod('custom_logo');
+        $image = wp_get_attachment_image_src($id, 'full');
+        if($image)
+            return $image[0];
+        else 
+            return '';
+    }
+
     function theme_get_the_archive_title() {
         if ( is_category() ) {            
             $title = single_cat_title( '', false );
