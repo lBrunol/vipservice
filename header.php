@@ -10,6 +10,9 @@
  */
 
 ?>
+<?php 
+	$menu_principal = wp_get_nav_menu_items( wp_get_nav_menu_object( 'principal' ));
+?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -21,38 +24,25 @@
 </head>
 
 <body <?php body_class(); ?>>
-<div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'vipservice' ); ?></a>
+<header>
+	<div class="container">
+		<div class="row">		
+			<div class="col-sm-3">
+				<img src="<?= theme_get_custom_logo() ?>" alt="<?= bloginfo( 'name' ); ?>" />
+			</div>
+			<div class="col-sm-9">	
+				<?php if($menu_principal) : ?>
+					<nav>
+						<ul>
+							<?php foreach($menu_principal as $item) : ?>
+								<li><a href="<?= $item->url ?>" target="<?= $item->target ?>"><?= $item->title ?></a></li>
+							<?php endforeach ?>
+						</ul>
+					</nav>
+				<?php endif;?>
+			</div>
+		</div>
+	</div>
+</header>
 
-	<header id="masthead" class="site-header">
-		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$vipservice_description = get_bloginfo( 'description', 'display' );
-			if ( $vipservice_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $vipservice_description; /* WPCS: xss ok. */ ?></p>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
 
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'vipservice' ); ?></button>
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'menu-1',
-				'menu_id'        => 'primary-menu',
-			) );
-			?>
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
-
-	<div id="content" class="site-content">

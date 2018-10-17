@@ -123,9 +123,11 @@ function vipservice_scripts() {
 
 	wp_enqueue_script( 'jquery-v3', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', array(), false, true );
 	wp_enqueue_script( 'popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', array(), false, true );
+	wp_enqueue_script( 'owl-js', get_template_directory_uri() . '/js/owl.carousel.min.js', array(), false, true );
 	wp_enqueue_script( 'vipservice-js', get_template_directory_uri() . '/js/scripts.js', array(), false, true );
 
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), false );
+	wp_enqueue_style( 'owl-css', get_template_directory_uri() . '/css/owl.carousel.min.css', array(), false );
 	wp_enqueue_style( 'vipservice-style', get_stylesheet_uri() );
 	wp_enqueue_style( 'vipservice-css', get_template_directory_uri() . '/css/style.css' );
 
