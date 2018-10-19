@@ -187,3 +187,4 @@ require_once get_template_directory() . '/inc/custom-images.php';
 * Custom post types
 */
 require_once get_template_directory() . '/inc/custom-post-type/custom-type-banner.php';
+require_once get_template_directory() . '/inc/custom-post-type/custom-type-servicos.php';

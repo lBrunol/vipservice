@@ -141,4 +141,21 @@
 
         return $outStr;
     }
+
+    /*
+    * Adiciona um meta termo à api rest
+    */
+    function theme_get_api( $object, $field_name, $request ) {
+        return get_post_meta( $object[ 'id' ], $field_name, true );
+    }
+
+    /**
+     * Verifica se existem filhos
+     */
+    function theme_has_children($object, $field_name, $request){
+        $query = new WP_Query(array('post_parent' => $object[ 'id' ], 'post_type' => 'servicos'));
+        return $query->have_posts();
+        // return count(get_pages(array('child_of' => $object[ 'id' ] ))) > 0;
+    }
+
 ?>
