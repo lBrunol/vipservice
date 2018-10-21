@@ -57,10 +57,64 @@ $banners = new WP_Query( array(
 		</div>
 	<?php endif; ?>
 </section>
+<section class="orcamento">
+	<div class="col-md-6">
+		<div class="servicos-orcamento">
+			{{ loading }}
+			<div class="row">
+				<template v-if="posts.length > 0">
+					<div class="col-md-3" v-for="post in posts">
+						<div class="card">
+							<div v-if="post._embedded !== undefined">						
+								<div v-if="Object.keys(post._embedded).indexOf('wp:featuredmedia') !== -1">
+									<img class="card-img-top" v-bind:src="post._embedded['wp:featuredmedia'][0].source_url" alt="Card image cap">
+								</div>
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" v-html="post.title.rendered"></h5>
+								<p class="card-text" v-html="post.servico_orcamento_preco"></p>
+								<a href="#" class="btn btn-primary" v-bind:href="post.link" >Ir para</a>
+							</div>
+						</div>
+					</div>
+				</template>
+			</div>
+		</div>
+	</div>
+</section>
 <?php
 get_footer();
 ?>
 <script>
+
+	let app = new Vue({
+		el: '.servicos-orcamento',
+		data: {
+			message : 'Olá',
+			loading: 'Carregando',
+			posts: []
+		},
+		created: function(){
+			this.debounceGetPosts = _.debounce(this.getPosts, 500);
+			this.debounceGetPosts();
+		},
+		methods: {
+			getPosts: function(){
+				let vm = this;
+				axios.get('/wp-json/wp/v2/servicos_orcamento?_embed')
+					.then(function(response){
+						console.log(Object.keys(response.data[0]._embedded));
+						vm.posts = response.data;
+						vm.loading = 'Carregado';
+					})
+					.catch(function(error){
+						console.log(error);
+						vm.loading = 'Erro';						
+					})
+			}
+		}
+	})
+
 	$(function(){
 		$('.owl-carousel').owlCarousel({
 			responsive: {
