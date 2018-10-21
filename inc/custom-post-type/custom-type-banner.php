@@ -33,7 +33,7 @@ function custom_type_banner() {
         'public' => false,
         'show_ui' => true,
         'show_in_rest' => false,
-		'menu_position' => 7,
+		'menu_position' => 5,
 		'menu_icon' => 'dashicons-format-image',
 		'supports' => array( 'title', 'thumbnail'),
         'register_meta_box_cb' => 'banner_meta_box',
