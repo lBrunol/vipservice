@@ -31,7 +31,7 @@ gulp.task('stylus', function(){
 gulp.task('javascript', function () {
     pump([
         gulp.src('./assets/js/*.js'),
-        uglify(),
+        // uglify(),
         gulp.dest('./js')
     ]);
 });

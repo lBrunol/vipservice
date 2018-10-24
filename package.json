@@ -19,7 +19,8 @@
     "url": "https://github.com/lBrunol/vipservice/issues"
   },
   "homepage": "https://github.com/lBrunol/vipservice#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "autoprefixer": "^6.7.3",
     "cssnano": "^3.10.0",
     "gulp": "^3.9.1",
@@ -28,10 +29,7 @@
     "gulp-sourcemaps": "^2.4.1",
     "gulp-stylus": "^2.6.0",
     "gulp-uglify": "^2.0.1",
-    "pump": "^1.0.2"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
+    "pump": "^1.0.2",
     "gulp-cli": "^1.2.2",
     "yarn": "^0.22.0"
   }
