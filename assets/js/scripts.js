@@ -65,3 +65,19 @@ let app = new Vue({
         }
     }
 });
+
+Vue.component('post', {
+    props: ['post'],
+    template: `
+        <div class="card">
+            <template v-if="post.imageUrl !== ''">
+                <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
+            </template>
+            <div class="card-body">
+                <h5 class="card-title" v-html="post.title"></h5>
+                <p class="card-text" v-html="post.price"></p>
+                <a href="#" class="btn btn-primary" v-bind:href="post.link" >Ir para</a>
+            </div>
+        </div>
+    `
+});

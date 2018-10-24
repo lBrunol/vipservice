@@ -64,16 +64,7 @@ $banners = new WP_Query( array(
 			<div class="row">
 				<template v-if="posts.length > 0">
 					<div class="col-md-3" v-for="post in posts">
-						<div class="card">
-							<template v-if="post.imageUrl !== ''">
-								<img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
-							</template>
-							<div class="card-body">
-								<h5 class="card-title" v-html="post.title"></h5>
-								<p class="card-text" v-html="post.price"></p>
-								<a href="#" class="btn btn-primary" v-bind:href="post.link" >Ir para</a>
-							</div>
-						</div>
+						<post v-bind:post="post"></post>
 					</div>
 				</template>
 			</div>
