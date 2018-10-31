@@ -64,7 +64,27 @@ $banners = new WP_Query( array(
 			<div class="row">
 				<template v-if="posts.length > 0">
 					<div class="col-md-3" v-for="post in posts">
-						<post v-bind:post="post"></post>
+						<div :class="'post --first' + post.id">
+							<post v-bind="{post, changeState, previous}"></post>
+							<!--<template v-if="post.children.length > 0">
+								<div class="p2">
+									<template v-for="post2 in post.children">
+										<div :class="'p2 p' + post2.id">
+											<post v-bind:post="post2"></post>
+											<template v-if="post2.children.length > 0">
+												<div class="p3">
+													<template v-for="post3 in post2.children">
+														<div :class="'p3 p' + post3.id">
+															<post v-bind:post="post3"></post>
+														</div>
+													</template>
+												</div>
+											</template>
+										</div>
+									</template>
+								</div>
+							</template>-->
+						</div>
 					</div>
 				</template>
 			</div>

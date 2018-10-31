@@ -17,7 +17,8 @@ let app = new Vue({
     data: {
         message : 'Olá',
         loading: 'Carregando',
-        posts: []
+        posts: [],
+        prevPosts: []
     },
     created: function(){
         this.debounceGetPosts = _.debounce(this.getPosts, 500);
@@ -28,14 +29,56 @@ let app = new Vue({
             let vm = this;
             axios.get('/wp-json/wp/v2/servicos_orcamento?_embed')
                 .then(function(response){
-                    posts = vm.handlePosts(response.data);
-                    vm.posts = posts;
+                    let posts = vm.handlePosts(response.data);
+                    if(posts.length > 0){
+                        let ordernedPosts = vm.buildHierarchy(posts);
+                        vm.posts = ordernedPosts;
+                    }
                     vm.loading = 'Carregado';
                 })
                 .catch(function(error){
                     console.log(error);
                     vm.loading = 'Erro';
                 })
+        },
+        buildHierarchy: function(arr) {
+
+            let roots = [];
+            let children = {};
+        
+            // find the top level nodes and hash the children based on parent
+            for (let i = 0, len = arr.length; i < len; ++i) {
+                let item = arr[i],
+                    p = item.parent,
+                    target = !p ? roots : (children[p] || (children[p] = []));
+        
+                target.push(item);
+            }
+        
+            // function to recursively build the tree
+            let findChildren = function(parent) {
+                if (children[parent.id]) {
+                    parent.children = children[parent.id];
+                    for (let i = 0, len = parent.children.length; i < len; ++i) {
+                        findChildren(parent.children[i]);
+                    }
+                }
+            };
+        
+            // enumerate through to handle the case where there are multiple roots
+            for (let i = 0, len = roots.length; i < len; ++i) {
+                findChildren(roots[i]);
+            }
+        
+            return roots;
+        },
+        changeState: function(param){
+            this.prevPosts = this.posts;
+            this.posts = param;
+        },
+        previous: function(){
+            if(this.prevPosts.length > 0)
+                this.posts = this.prevPosts;
         },
         handlePosts: function(posts){
             postsList = [];
@@ -51,6 +94,7 @@ let app = new Vue({
                     p.order = item.menu_order;
                     p.price = item.servico_orcamento_preco;
                     p.hasChildren = item.has_children;
+                    p.children = [];
                     p.imageUrl = '';
                     if(item._embedded !== undefined){
                         if(item._embedded['wp:featuredmedia'] !== undefined){
@@ -67,7 +111,7 @@ let app = new Vue({
 });
 
 Vue.component('post', {
-    props: ['post'],
+    props: ['post', 'changeState', 'previous'],
     template: `
         <div class="card">
             <template v-if="post.imageUrl !== ''">
@@ -77,6 +121,12 @@ Vue.component('post', {
                 <h5 class="card-title" v-html="post.title"></h5>
                 <p class="card-text" v-html="post.price"></p>
                 <a href="#" class="btn btn-primary" v-bind:href="post.link" >Ir para</a>
+                <template v-if="post.children.length > 0">
+                    <a href="#" class="btn btn-secondary" @click="changeState(post.children)">Next</a>
+                </template>
+                <template v-if="post.children.length == 0">
+                    <a href="#" class="btn btn-secondary" @click="previous()">Previous</a>
+                </template>
             </div>
         </div>
     `
