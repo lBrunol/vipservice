@@ -13,12 +13,14 @@ class Post {
     }
 } 
 let app = new Vue({
-    el: '.servicos-orcamento',
+    el: '.orcamento',
     data: {
         message : 'Olá',
         loading: 'Carregando',
         posts: [],
-        prevPosts: []
+        prevPosts: [],
+        posPosts: 0,
+        selectedPosts: [],
     },
     created: function(){
         this.debounceGetPosts = _.debounce(this.getPosts, 500);
@@ -73,12 +75,39 @@ let app = new Vue({
             return roots;
         },
         changeState: function(param){
-            this.prevPosts = this.posts;
+            this.prevPosts.push(this.posts);
+            this.posPosts++;
             this.posts = param;
         },
-        previous: function(){
-            if(this.prevPosts.length > 0)
-                this.posts = this.prevPosts;
+        previous: function(index){
+            if(this.prevPosts.length > 0){
+                this.posPosts = index || this.posPosts - 1;
+                this.posts = this.prevPosts[this.posPosts];
+                if(this.posPosts == 0){
+                    this.clearPrevPosts();
+                }
+            }
+        },
+        clearPrevPosts: function(){
+            this.prevPosts = [];
+        },
+        chooseService: function(post){
+            this.selectedPosts.push(post);
+            this.previous(0);
+            console.log(this.selectedPosts);
+        },
+        removePost: function(index){
+            if(this.selectedPosts[index] !== undefined){
+                this.selectedPosts.splice(index, 1);
+            }
+        },
+        sumPostsPrice: function(){
+            if(this.selectedPosts.length > 0){
+                return this.selectedPosts.reduce(function(prevVal, item){
+                    return prevVal + (item.price * 1);
+                }, 0);
+            }
+            return 0;
         },
         handlePosts: function(posts){
             postsList = [];
@@ -110,24 +139,40 @@ let app = new Vue({
     }
 });
 
-Vue.component('post', {
-    props: ['post', 'changeState', 'previous'],
+Vue.component('selected-services', {
+    props:['posts', 'removePost', 'sumPostsPrice'],
     template: `
-        <div class="card">
-            <template v-if="post.imageUrl !== ''">
-                <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
-            </template>
-            <div class="card-body">
-                <h5 class="card-title" v-html="post.title"></h5>
-                <p class="card-text" v-html="post.price"></p>
-                <a href="#" class="btn btn-primary" v-bind:href="post.link" >Ir para</a>
-                <template v-if="post.children.length > 0">
-                    <a href="#" class="btn btn-secondary" @click="changeState(post.children)">Next</a>
+        <div>
+            <ul>
+                <li v-for="(post, index) in posts"><span v-html="post.title"></span> <span v-html="post.price"></span><a href="#" class="btn btn-danger" @click="removePost(index)">Remover</a></li>
+            </ul>
+            <span v-html="sumPostsPrice()"></span>
+        </div>
+    `
+});
+
+Vue.component('post', {
+    props: ['post', 'changeState', 'previous', 'chooseService'],
+    template: `
+        <div>
+            <div class="card">
+                <template v-if="post.imageUrl !== ''">
+                    <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
                 </template>
-                <template v-if="post.children.length == 0">
-                    <a href="#" class="btn btn-secondary" @click="previous()">Previous</a>
-                </template>
+                <div class="card-body">
+                    <h5 class="card-title" v-html="post.title"></h5>
+                    <p class="card-text" v-html="post.price"></p>
+                    <template v-if="post.children.length > 0">
+                        <a href="#" class="btn btn-secondary" @click="changeState(post.children)">Next</a>
+                    </template>
+                    <template v-if="post.children.length == 0">
+                        <a href="#" class="btn btn-info" @click="chooseService(post)">Escolher</a>
+                    </template>
+                </div>
             </div>
+            <template v-if="post.children.length == 0">
+                <a href="#" class="btn btn-secondary" @click="previous()">Previous</a>
+            </template>
         </div>
     `
 });

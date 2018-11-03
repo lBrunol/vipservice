@@ -65,7 +65,7 @@ $banners = new WP_Query( array(
 				<template v-if="posts.length > 0">
 					<div class="col-md-3" v-for="post in posts">
 						<div :class="'post --first' + post.id">
-							<post v-bind="{post, changeState, previous}"></post>
+							<post v-bind="{post, changeState, previous, chooseService}"></post>
 							<!--<template v-if="post.children.length > 0">
 								<div class="p2">
 									<template v-for="post2 in post.children">
@@ -88,6 +88,13 @@ $banners = new WP_Query( array(
 					</div>
 				</template>
 			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="row">
+			<template v-if="selectedPosts.length > 0">
+				<selected-services v-bind="{posts: selectedPosts, removePost: removePost, sumPostsPrice: sumPostsPrice}"></selected-services>
+			</template>
 		</div>
 	</div>
 </section>
