@@ -29,75 +29,46 @@ $banners = new WP_Query( array(
 
 ?>
 
-<section>
-	<?php 
-		if ( $banners -> have_posts() ) : 
-			$banners -> the_post();
-	?>
-		<div class="owl-carousel main-banner">
-			<?php foreach( $banners -> posts as $banner ) : 
-				$imagem = wp_get_attachment_image_src( get_post_thumbnail_id( $banner -> ID ), 'full' );
-				$nova_guia = !empty( get_post_meta( $banner -> ID, 'banner_target', true ) ) ? '_blank' : '_self';
-				$link = get_post_meta( $banner -> ID, 'banner_link', true );
-    			$position = get_post_meta( $banner -> ID, 'banner_position', true);
-    			// if ( $position == 'principal' ) :
-			?>
-				<div class="item">
-					<?php if ( !empty( $link ) ) : ?>
-						<a href="<?php echo $link; ?>" target="<?php echo $nova_guia; ?>">
-					<?php endif; ?>
-
-					<img src="<?php echo $imagem[0]; ?>" alt="<?php echo get_the_title(); ?>" class="js-img-responsive img-responsive image" data-img-default="<?php echo $imagem[0]; ?>" />
-
-					<?php if ( !empty( $link ) ) : ?>
-						</a>
-					<?php endif; ?>
-				</div>
-				<?php /*endif;*/ endforeach; ?>
-		</div>
-	<?php endif; ?>
-</section>
 <section class="orcamento">
-	<div class="col-md-6">
-		<div class="servicos-orcamento">
-			{{ loading }}
-			<div class="row">
-				<template v-if="posts.length > 0">
-					<div class="col-md-3" v-for="post in posts">
-						<div :class="'post --first' + post.id">
-							<post v-bind="{post, changeState, previous, chooseService}"></post>
-							<!--<template v-if="post.children.length > 0">
-								<div class="p2">
-									<template v-for="post2 in post.children">
-										<div :class="'p2 p' + post2.id">
-											<post v-bind:post="post2"></post>
-											<template v-if="post2.children.length > 0">
-												<div class="p3">
-													<template v-for="post3 in post2.children">
-														<div :class="'p3 p' + post3.id">
-															<post v-bind:post="post3"></post>
-														</div>
-													</template>
-												</div>
-											</template>
-										</div>
-									</template>
-								</div>
-							</template>-->
+	<div class="container-contato" id="fale">
+	<h3 class="texto titulo-grande">FAÇA SEU ORÇAMENTO AGORA!</h3> 
+    <div class="container">    
+		<div class="row">  
+        	<div class="col-sm-6"> 
+          		<div class="box"> 
+					<p>Para solicitar seu orçamento,preencha o formulário ao lado ou se preferir, entre em contato através de nossas redes sociais.</p>            
+					<p><img src="img/whatsapp.png" class="icones">(11)96672-8816/ (11)9476-6398</p>
+					<p>facebook.com/vipservice<img src="img/facebook.png" style="float:left;"></p>    
+					<p>instagram.com/vipservice <img src="img/instagram.png" style="float:left;"></p>			
+					<p>Aceitamos todos tipos de cartões</p>			
+					<img src="img/cartoes.jpg">
+					<br> 
+					<h6>*Todos os orçamentos serão respondidos em no máximo 24 horas</h6>                      
+	          	</div>
+          	</div>
+			<div class="col-md-6">
+				<div class="servicos-orcamento">
+					{{ loading }}
+					<template v-if="posts.length > 0">
+						<div class="col-md-3" v-for="post in posts">
+							<div :class="'post --first' + post.id">
+								<post class="box-post" v-bind="{post, handleState, chooseService}"></post>
+							</div>
 						</div>
-					</div>
-				</template>
+					</template>
+				</div>
 			</div>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="row">
-			<template v-if="selectedPosts.length > 0">
-				<selected-services v-bind="{posts: selectedPosts, removePost: removePost, sumPostsPrice: sumPostsPrice}"></selected-services>
-			</template>
-		</div>
+			<div class="col-md-6">
+				<div class="row">
+					<template v-if="selectedPosts.length > 0">
+						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, sumPostsPrice: sumPostsPrice}"></selected-services>
+					</template>
+				</div>
+			</div>
+		</div> 
 	</div>
 </section>
+
 <?php
 get_footer();
 ?>

@@ -1,0 +1,240 @@
+h1,h2,h3,h4 {
+	font-family: 'Montserrat';
+	font-weight: bold;
+	color: #4073b5;
+	text-transform: uppercase;
+}
+
+h1 {
+	font-size: 24px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+	display: inline-block;
+}
+
+p, ul, li, input, select, textarea, label {
+	font-family: 'Poppins';
+}
+
+p {
+	font-size: 18px;
+	color: #333;
+	margin-bottom: 35px;
+	text-align: left;
+}
+
+.lista {
+	padding-left: 15px;
+}
+
+.titulo-grande {
+	font-size: 24px;
+	text-align: center;
+}
+
+.titulo-medio {
+	font-size: 20px;
+}
+
+.espaco-quemsomos {
+	margin-top: 50px;
+}
+
+.menor {
+	font-size: 14px;
+}
+
+.lista {
+	text-align: left;
+}
+
+.active {	
+	font-family: 'Roboto';
+	font-weight: bold;
+	font-size: 14px;
+	color: #fff;
+}
+
+.sub-topo {
+   font-family: 'Montserrat';
+   font-size: 24px;
+   text-align: center;
+}
+.menu-site {
+	margin-top: 55px;
+}
+
+.menu-site li a {
+	color: #fff;
+	font-family: 'Montserrat';
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.menu-site li a:hover,
+.menu-site li a:focus,
+.menu-site li a:active {
+	color: #fff;
+	background: transparent;
+}
+
+.owl-carousel .owl-dots {
+	text-align: center;
+}
+
+.owl-carousel button.owl-dot {
+	width: 15px;
+	height: 15px;
+	margin-right: 10px;
+	border-radius: 50%;
+	background: #4073b5;
+}
+
+.page-header {
+    position: static;
+
+}
+
+.nossos-servicos {
+	margin-top: 150px;
+	background-image: url('img/bg-servicos.PNG');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	min-height: 987px;
+	text-align: center;
+}
+
+.nossos-servicos .nossos-servicos-titulo {
+	color: #fff;	
+	margin-bottom: 120px;
+}
+
+.box-servico {
+	background-color: #4073b5;
+	padding: 20px;
+	min-height: 620px;
+	display: flex;
+	align-items: center;
+	
+}
+
+.box-servico .box-servico-titulo {
+	color: #fff;
+	font-size: 20px;
+	text-transform: uppercase;
+	margin-bottom: 60px;
+	text-align: center;
+}
+
+.box-servico .box-servico-img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50px;
+}
+
+.box-servico .box-servico-descricao {
+	font-size: 14px;
+	color: #fff;
+}
+
+@media (max-width: 992px){
+
+	.box-servico {
+		margin-top: 20px;
+	}
+
+	.nossos-servicos {
+		min-height: auto;
+	}
+}
+
+.carousel-1 {
+         text-align: center; 
+         background-color: #fff; 
+         padding-top: 50px;
+         padding-bottom: 30px;
+
+}
+
+.container-contato {
+  background-color: #4073b5;
+  font-family: 'Poppins' 14px;
+  margin-top: 40px;
+  padding: 40px;
+}
+
+.img {
+	width: 550px;
+	
+}
+
+.icones{
+	padding-right: 8px;
+}
+
+.ajuste-imagens {
+  float:right; 
+  
+}
+
+.texto {
+  text-align: center ;
+  color: #fff;
+  margin-bottom: 35px;
+  margin-top: 45;
+} 
+
+.box {
+	background-color: #fff;
+    width: 550px;
+    padding-top: 45px;
+    padding-bottom: 45px;
+    padding-left: 15px;
+    height: 530px;
+    margin-top: 45px 20px 80px 30px;
+    margin-bottom: 20px;
+}
+
+.container-cadastro { 	
+  background-color: #4073b5;
+  margin-bottom: 45px;
+  font-family: 'Poppins' 14px;
+  color: #fff; 
+}
+
+.seta-topo {
+	
+}
+   
+.footer {
+  font-family: 'Montserrat' normal 14px #fff;
+  background-color: #4073b5;
+  color: #fff;
+  height: 125px;
+  margin-top:40px;	
+}	
+
+
+.banner {
+	position: relative;
+	z-index: 1;
+	top: 0;
+}
+
+.topo {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	width: 100%;
+}
+
+.box-post {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	min-height: 138px;
+}

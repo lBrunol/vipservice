@@ -132,6 +132,7 @@ function vipservice_scripts() {
 
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), false );
 	wp_enqueue_style( 'owl-css', get_template_directory_uri() . '/css/owl.carousel.min.css', array(), false );
+	wp_enqueue_style( 'style-css', get_template_directory_uri() . '/css/estyle.css', array(), false );
 	wp_enqueue_style( 'vipservice-style', get_stylesheet_uri() );
 	wp_enqueue_style( 'vipservice-css', get_template_directory_uri() . '/css/style.css' );
 

@@ -74,6 +74,13 @@ let app = new Vue({
         
             return roots;
         },
+        handleState: function(post){
+            if(post.children.length > 0){
+                this.changeState(post.children);
+            } else {
+                this.chooseService(post);
+            }
+        },
         changeState: function(param){
             this.prevPosts.push(this.posts);
             this.posPosts++;
@@ -152,27 +159,12 @@ Vue.component('selected-services', {
 });
 
 Vue.component('post', {
-    props: ['post', 'changeState', 'previous', 'chooseService'],
+    props: ['post', 'handleState', 'chooseService'],
     template: `
-        <div>
-            <div class="card">
-                <template v-if="post.imageUrl !== ''">
-                    <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
-                </template>
-                <div class="card-body">
-                    <h5 class="card-title" v-html="post.title"></h5>
-                    <p class="card-text" v-html="post.price"></p>
-                    <template v-if="post.children.length > 0">
-                        <a href="#" class="btn btn-secondary" @click="changeState(post.children)">Next</a>
-                    </template>
-                    <template v-if="post.children.length == 0">
-                        <a href="#" class="btn btn-info" @click="chooseService(post)">Escolher</a>
-                    </template>
-                </div>
-            </div>
-            <template v-if="post.children.length == 0">
-                <a href="#" class="btn btn-secondary" @click="previous()">Previous</a>
+        <a class="link" v-bind:title="post.title" href="#" @click="handleState(post)">
+            <template v-if="post.imageUrl !== ''">
+                <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
             </template>
-        </div>
+        </a>
     `
 });
