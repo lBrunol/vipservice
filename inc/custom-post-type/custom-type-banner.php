@@ -83,12 +83,12 @@ function banner_meta(){
         <label>Posição</label>
         <label class="radio-img">
             <img src="<?php echo get_template_directory_uri(); ?>/images/admin/banner-principal.jpg" />
-            <input type="radio" name="banner_position" value="principal" <?php if ( $position == 'principal' ) echo 'checked'; ?>>
+            <input type="radio" name="banner_position" value="principal" <?php if ( $banner_position == 'principal' ) echo 'checked'; ?>>
             Banner Principal
         </label>
         <label class="radio-img">
             <img src="<?php echo get_template_directory_uri(); ?>/images/admin/destaque-01.jpg" />
-            <input type="radio" name="banner_position" value="destaque-01" <?php if ( $position == 'antes-depois' ) echo 'checked'; ?>>
+            <input type="radio" name="banner_position" value="antes-depois" <?php if ( $banner_position == 'antes-depois' ) echo 'checked'; ?>>
             Antes e depois
         </label>
     </div>
@@ -107,28 +107,25 @@ function save_banner_post( $post_id ) {
     if (!isset( $_POST['_inline_edit'] )){
         if ( get_post_type( $post_id ) == 'banners' ) {
 
-            $fields = array(
-                array(
-                    'field' => 'banner_target',
-                    'value' => $_POST['banner_target']
-                ),
-                array(
-                    'field' => 'banner_position',
-                    'value' => $_POST['banner_position']
-                ),
-                array(
-                    'field' => 'banner_link',
-                    'value' => $_POST['banner_link']
-                ),
-                array(
-                    'field' => 'banner_active',
-                    'value' => $_POST['banner_active']
-                )
-            );
+            $fields = [
+                'banner_target',
+                'banner_position',
+                'banner_link',
+                'banner_active'
+            ];
+            $values = [];
+
+            foreach($fields as $field){
+                if(isset($_POST[$field])) {
+                    array_push($values, ['field' => $field, 'value' => $_POST[$field]]);
+                }
+            }
             
             //Chama a função para salvar os posts meta
-            foreach( $fields as $field ){
-                theme_save_post_meta( $post_id, $field['field'], $field['value'] );
+            if(count($values) > 0){
+                foreach( $values as $value ){
+                    theme_save_post_meta( $post_id, $value['field'], $value['value'] );
+                }
             }
         }
     }

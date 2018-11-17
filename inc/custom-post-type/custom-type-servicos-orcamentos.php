@@ -98,16 +98,22 @@ function save_servico_orcamento_post( $post_id ) {
     if (!isset( $_POST['_inline_edit'] )){
         if ( get_post_type( $post_id ) == 'servicos_orcamento' && isset($_POST['servico_orcamento_preco'])) {
 
-            $fields = array(
-                array(
-                    'field' => 'servico_orcamento_preco',
-                    'value' => $_POST['servico_orcamento_preco']
-                ),
-            );
+            $fields = [
+                'servico_orcamento_preco',
+            ];
+            $values = [];
+
+            foreach($fields as $field){
+                if(isset($_POST[$field])) {
+                    array_push($values, ['field' => $field, 'value' => $_POST[$field]]);
+                }
+            }
             
             //Chama a função para salvar os posts meta
-            foreach( $fields as $field ){
-                theme_save_post_meta( $post_id, $field['field'], $field['value'] );
+            if(count($values) > 0){
+                foreach( $values as $value ){
+                    theme_save_post_meta( $post_id, $value['field'], $value['value'] );
+                }
             }
         }
     }

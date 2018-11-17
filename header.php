@@ -50,7 +50,7 @@
 				$nova_guia = !empty( get_post_meta( $banner -> ID, 'banner_target', true ) ) ? '_blank' : '_self';
 				$link = get_post_meta( $banner -> ID, 'banner_link', true );
     			$position = get_post_meta( $banner -> ID, 'banner_position', true);
-    			// if ( $position == 'principal' ) :
+    			if ( $position == 'principal' ) :
 			?>
 				<div class="item">
 					<?php if ( !empty( $link ) ) : ?>
@@ -63,7 +63,7 @@
 						</a>
 					<?php endif; ?>
 				</div>
-				<?php /*endif;*/ endforeach; ?>
+				<?php endif; endforeach; ?>
 		</div>
 	<?php endif; ?>
 </section>

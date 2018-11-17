@@ -25,6 +25,7 @@ p {
 }
 
 .lista {
+	margin: 0;
 	padding-left: 15px;
 }
 
@@ -81,6 +82,9 @@ p {
 
 .owl-carousel .owl-dots {
 	text-align: center;
+	position: absolute;
+    bottom: 10px;
+    width: 100%;
 }
 
 .owl-carousel button.owl-dot {
@@ -88,6 +92,16 @@ p {
 	height: 15px;
 	margin-right: 10px;
 	border-radius: 50%;
+	background: #fff;
+}
+
+.owl-carousel button.owl-dot:hover,
+.owl-carousel button.owl-dot:active,
+.owl-carousel button.owl-dot:focus {
+	background: #ccc;
+}
+
+.owl-carousel button.owl-dot.active {
 	background: #4073b5;
 }
 
@@ -97,8 +111,7 @@ p {
 }
 
 .nossos-servicos {
-	margin-top: 150px;
-	background-image: url('img/bg-servicos.PNG');
+	margin-top: 150px;	
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
