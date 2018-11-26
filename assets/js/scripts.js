@@ -168,3 +168,121 @@ Vue.component('post', {
         </a>
     `
 });
+
+$(function(){
+    $('.trabalhos-realizados-carousel .img-link').on('mouseenter', function(){
+        if($(this).siblings('.img-link-antes').length > 0)
+            $(this).addClass('hide').siblings('.img-link-antes').removeClass('hide');
+    });
+    $('.trabalhos-realizados-carousel .img-link-antes').on('mouseleave', function(){
+        if($(this).siblings('.img-link').length > 0)
+            $(this).addClass('hide').siblings('.img-link').removeClass('hide');
+    });
+
+    $('.trabalhos-realizados-carousel .link-banner').on('click', function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		$(this).siblings().removeClass('js-active');
+		$(this).addClass('js-active');
+		if(!$('body').hasClass('floater-open'))
+			openFloater();
+		$('body').addClass('floater-gallery-open');
+		loadFloaterImage($(this).data('img'));
+	});
+
+	$('.floater-site .floater-site-dialog').on('click', function(e){
+		e.stopPropagation();
+	});
+
+	$('.floater-site.-gallery').on('floater.hide', function(){
+		$('body').removeClass('floater-gallery-open');
+		$('.floater-gallery .floater-gallery-image.-loader').removeClass('js-hidden');
+		$('.floater-gallery .floater-gallery-image.-photo').attr('src','javascript:;').addClass('js-hidden');
+		$('.trabalhos-realizados-carousel .link-banner').removeClass('js-active');
+		$('.floater-gallery .js-left-gallery, .floater-gallery .js-right-gallery').removeClass('js-hidden');
+	});
+
+	$('.floater-site .close').on('click', function(e){
+		e.preventDefault();
+		closeFloater($(this));
+	});
+
+	var openFloater = function(){
+		$('.floater-background, .floater-site').addClass('js-active');
+		$('body').addClass('floater-open');
+	}
+
+	$('body').on('click', function(){
+		if($(this).hasClass('floater-open'))
+			closeFloater('.floater-site');
+	})
+	.on('keyup', function(e){
+		if($(this).hasClass('floater-open') && e.keyCode == 27)
+			closeFloater('.floater-site');
+		if($(this).hasClass('floater-gallery-open') && e.keyCode == 37)
+			$('.floater-gallery .js-left-gallery').trigger('click');
+		if($(this).hasClass('floater-gallery-open') && e.keyCode == 39)
+			$('.floater-gallery .js-right-gallery').trigger('click');
+
+	});
+
+	var closeFloater = function(instance){
+		var $floater = "";
+
+		if(typeof instance === 'undefinded'){
+			return false;
+		}else if(typeof instance === 'string'){
+			$floater = $(instance);
+		} else if(typeof instance === 'object'){
+			$floater = $(instance).closest('.floater-site');
+		}
+
+		if($floater instanceof jQuery){
+			$floater.trigger('floater.hidden');
+			$floater.removeClass('js-active');
+			setTimeout(function(){
+				$('.floater-background').removeClass('js-active');
+				$('body').removeClass('floater-open');
+				$floater.trigger('floater.hide');
+			}, 300);
+		} else {
+			return false;
+		}
+	}
+
+	var loadFloaterImage = function(src){
+		if(src !== undefined){
+			$('.floater-gallery .floater-gallery-image.-loader').removeClass('js-hidden');
+			$('.floater-gallery .floater-gallery-image.-photo').addClass('js-hidden');
+			
+			getAsyncImage(src).then(function(src){
+				$('.floater-gallery .floater-gallery-image.-loader').addClass('js-hidden');
+				$('.floater-gallery .floater-gallery-image.-photo').attr('src', src).removeClass('js-hidden');
+			}).catch(function(){
+				$('.floater-gallery .floater-gallery-message').removeClass('js-hidden');
+				$('.floater-gallery .floater-gallery-image.-loader').addClass('js-hidden');
+			});
+		}
+	}
+
+});
+
+function getAsyncImage(url, beforeStart){
+	return new Promise(function(resolve, reject){
+		var image = new Image();
+
+		if(beforeStart !== undefined)
+			beforeStart();
+
+		image.onload = function(){
+			resolve(url);
+		};
+
+		image.onerror = function(){
+			reject(url);
+		};
+		
+		image.src = url;
+
+	});
+}

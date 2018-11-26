@@ -35,6 +35,7 @@ $banners_antes_depois_posts = new WP_Query( array(
 
 
 $page_quem_somos = get_page_by_path('quem-somos');
+$page_orcamento = get_page_by_path('faca-seu-orcamento');
 ?>
 
 <?php if($page_quem_somos) : ?>
@@ -81,9 +82,9 @@ $page_quem_somos = get_page_by_path('quem-somos');
 				if ( $position == 'antes-depois' ) :
 			?>
 				<div class="item">
-					<a href="#"><img src="<?= $imagem_depois ?>" alt="<?php echo get_the_title(); ?>" class="img-responsive image" /></a>
+					<a href="#" class="link-banner img-link" data-img="<?= $imagem[0] ?>"><img src="<?= $imagem_depois ?>" alt="<?php echo get_the_title(); ?>" class="img-responsive image" /></a>
 					<?php if($imagem_antes) : ?>
-						<a href="#" class="hide"><img src="<?= $imagem_antes ?>" alt="<?php echo get_the_title(); ?>" class="img-responsive image" /></a>
+						<a href="#" class="hide link-banner img-link-antes" data-img="<?= $imagem[0] ?>"><img src="<?= $imagem_antes ?>" alt="<?php echo get_the_title(); ?>" class="img-responsive image" /></a>
 					<?php endif; ?>
 				</div>
 				<?php endif; endforeach; ?>
@@ -98,16 +99,7 @@ $page_quem_somos = get_page_by_path('quem-somos');
     <div class="container">    
 		<div class="row">  
         	<div class="col-sm-6"> 
-          		<div class="box"> 
-					<p>Para solicitar seu orçamento,preencha o formulário ao lado ou se preferir, entre em contato através de nossas redes sociais.</p>            
-					<p><img src="images/whatsapp.png" class="icones">(11)96672-8816/ (11)9476-6398</p>
-					<p>facebook.com/vipservice<img src="images/facebook.png" style="float:left;"></p>    
-					<p>instagram.com/vipservice <img src="images/instagram.png" style="float:left;"></p>			
-					<p>Aceitamos todos tipos de cartões</p>			
-					<img src="images/cartoes.jpg">
-					<br> 
-					<h6>*Todos os orçamentos serão respondidos em no máximo 24 horas</h6>                      
-	          	</div>
+				<?php echo $page_orcamento->post_content ?>
           	</div>
 			<div class="col-md-6">
 				<div class="servicos-orcamento">

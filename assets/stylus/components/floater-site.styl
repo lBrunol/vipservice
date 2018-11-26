@@ -1,0 +1,92 @@
+$margin-floater = 50px;
+
+.floater-site {
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    opacity: 0;
+    transition: all .15s linear;
+    visibility: hidden;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1050;
+
+    &.js-active {
+        
+        opacity: 1;
+        visibility: visible;
+
+        .floater-site-dialog {
+            transform: scale(1);            
+        }
+    }
+
+    &.-gallery {
+        .floater-site-content img {
+            height: auto;
+            max-width: 100%
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    }
+
+    &.-medium {
+        .floater-site-dialog {
+            max-width: 600px;
+        }
+    }
+
+    &.-large {
+        .floater-site-dialog {
+            max-width: 900px;
+        }
+    }
+
+    &.-bg {
+        .floater-site-dialog .floater-site-content {
+            background-color: #fff;
+            background-clip: padding-box;
+        }
+    }
+
+    .floater-site-dialog {
+        margin: $margin-floater auto;
+        transform: scale(1.5);
+        transform-origin: center; 
+        transition: .3s ease-in-out all;
+        position: relative;
+    }
+
+    .floater-site-dialog .floater-site-content {
+        position: relative;        
+        outline: 0;
+    }
+
+    .close {
+        position: absolute;
+        right: 10px;
+        top: -($margin-floater - 10px);
+        font-size: 35px;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-shadow: 0 1px 0 #fff;
+        transition: .2s all ease-in-out;
+        transform-origin: center;
+
+        &:hover,
+        &:focus,
+        &:active {
+            transform: scale(1.1);
+        }
+
+        &button{
+            @extend .reset-button;
+        }
+    }
+}

@@ -1,0 +1,73 @@
+.floater-gallery {
+    .floater-gallery-icon {
+        position: absolute;
+        top: calc(50% - 20px);
+        color: #fff;
+        font-size: 60px;
+        transition: .2s all linear;
+        transform-origin: center;
+        z-index: 1;
+
+        &:hover,
+        &:focus,
+        &:active {
+            transform: scale(1.2);
+        }
+
+        &.-left {
+            left: -100px;
+        }
+
+        &.-right {
+            right: -100px;
+        }
+
+        &.js-hidden {
+            display: none;
+        }
+
+        .icon:before {
+            text-shadow: 1px 1px 3px #000;
+        }
+    }
+
+    .floater-gallery-message {
+        
+        color: #fff;
+
+        &.js-hidden {
+            display: none;
+        }
+    }
+
+    .floater-gallery-image.-loader {
+        &.js-hidden {   
+            display: none;
+        }
+    }
+
+    .floater-gallery-image.-photo {
+        transform: scale(1);
+        transform-origin: center;
+        visibility: visible; 
+        transition: .2s all linear;
+
+        &.js-hidden {
+            visibility: hidden;
+            transform: scale(0);
+            transition: none;
+        }
+    }
+
+    @media(max-width: $screen-sm) {
+        .floater-gallery-icon {
+            &.-left {
+                left: 30px;
+            }
+
+            &.-right {
+                right: 30px;
+            }      
+        }
+    }
+}

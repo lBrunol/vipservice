@@ -1,0 +1,18 @@
+//Reseta o estilo padrão dos botões
+.reset-button {
+	-webkit-appearance: none;
+	background-color: transparent;
+	cursor: pointer;
+    padding: 0;
+    background: 0 0;
+    border: 0;
+}
+
+//Evita que a altura do elemento seja perdida quando o filho possua a propriedade float setada
+.clearfix {
+	&:after {
+		content: "";
+    	display: table;
+    	clear: both;
+	}
+}
