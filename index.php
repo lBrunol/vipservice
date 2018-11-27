@@ -100,24 +100,35 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 		<div class="row">  
         	<div class="col-sm-6"> 
 				<?php echo $page_orcamento->post_content ?>
+				<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader" />
           	</div>
 			<div class="col-md-6">
-				<div class="servicos-orcamento">
-					{{ loading }}
-					<template v-if="posts.length > 0">
-						<div class="col-md-3" v-for="post in posts">
-							<div :class="'post --first' + post.id">
-								<post class="box-post" v-bind="{post, handleState, chooseService}"></post>
-							</div>
+				<div class="row" v-if="step == 1">
+					<div class="col-sm-12">
+						<div class="servicos-orcamento">
+							<template v-if="posts.length > 0">
+								<div class="col-md-3" v-for="post in posts">
+									<div :class="'post --first' + post.id">
+										<post class="box-post" v-bind="{post, handleState, chooseService}"></post>
+									</div>
+								</div>
+							</template>
+							<button v-if="prevPosts.length > 0" class="btn btn-secondary" type="button" @click="previous(0)">Voltar</button>
 						</div>
-					</template>
+					</div>
 				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="row">
-					<template v-if="selectedPosts.length > 0">
-						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, sumPostsPrice: sumPostsPrice}"></selected-services>
-					</template>
+				<div class="row" v-if="step == 2">
+					<div class="col-sm-6">
+						<?php echo do_shortcode('[contact-form-7 id="49" title="Orçamento"]'); ?>
+						<button class="btn btn-secondary" type="button" @click="previousStep()">Voltar</button>						
+					</div>
+				</div>
+				<div class="row" v-if="selectedPosts.length > 0">
+					<div class="col-sm-12">
+						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
+						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice}"></selected-services>
+						<button v-if="selectedPosts.length > 0" class="btn btn-success" type="button" @click="shouldNextStep()">Concluir</button>							
+					</div>
 				</div>
 			</div>
 		</div> 

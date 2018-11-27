@@ -16,11 +16,12 @@ let app = new Vue({
     el: '.orcamento',
     data: {
         message : 'Olá',
-        loading: 'Carregando',
+        loading: true,
         posts: [],
         prevPosts: [],
         posPosts: 0,
         selectedPosts: [],
+        step: 1,
     },
     created: function(){
         this.debounceGetPosts = _.debounce(this.getPosts, 500);
@@ -36,11 +37,11 @@ let app = new Vue({
                         let ordernedPosts = vm.buildHierarchy(posts);
                         vm.posts = ordernedPosts;
                     }
-                    vm.loading = 'Carregado';
+                    vm.loading = false;
                 })
                 .catch(function(error){
                     console.log(error);
-                    vm.loading = 'Erro';
+                    vm.loading = false;
                 })
         },
         buildHierarchy: function(arr) {
@@ -88,12 +89,31 @@ let app = new Vue({
         },
         previous: function(index){
             if(this.prevPosts.length > 0){
-                this.posPosts = index || this.posPosts - 1;
+                if(index !== undefined && index >= 0){
+                    this.posPosts = index;
+                } else if(this.posPosts.length > 0) {
+                    this.posPosts = this.posPosts - 1;                    
+                } else {
+                    this.posPosts = 0;
+                }
                 this.posts = this.prevPosts[this.posPosts];
                 if(this.posPosts == 0){
                     this.clearPrevPosts();
                 }
             }
+        },
+        shouldNextStep: function(){
+            if(this.selectedPosts.length > 0){
+                this.nextStep();
+            } else {
+                alert("Selecione ao menos um serviço");
+            }
+        },
+        nextStep: function(){
+            this.step = this.step + 1;
+        },
+        previousStep: function(){
+            this.step = this.step - 1;
         },
         clearPrevPosts: function(){
             this.prevPosts = [];
@@ -101,12 +121,14 @@ let app = new Vue({
         chooseService: function(post){
             this.selectedPosts.push(post);
             this.previous(0);
-            console.log(this.selectedPosts);
         },
         removePost: function(index){
             if(this.selectedPosts[index] !== undefined){
                 this.selectedPosts.splice(index, 1);
             }
+        },
+        writePostsPrice: function(){
+            return "R$ " + this.sumPostsPrice();
         },
         sumPostsPrice: function(){
             if(this.selectedPosts.length > 0){
@@ -147,25 +169,41 @@ let app = new Vue({
 });
 
 Vue.component('selected-services', {
-    props:['posts', 'removePost', 'sumPostsPrice'],
+    props:['posts', 'removePost', 'writePostsPrice'],
     template: `
-        <div>
-            <ul>
-                <li v-for="(post, index) in posts"><span v-html="post.title"></span> <span v-html="post.price"></span><a href="#" class="btn btn-danger" @click="removePost(index)">Remover</a></li>
-            </ul>
-            <span v-html="sumPostsPrice()"></span>
-        </div>
+        <table class="table table-orcamento">
+            <thead>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Preço</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(post, index) in posts">
+                    <td v-html="post.title"></td> 
+                    <td v-html="'R$ ' + post.price"></td>
+                    <td><button type="button" class="btn btn-danger" @click="removePost(index)">Remover</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total</td>
+                    <td><span v-html="writePostsPrice()"></span></td>
+                </tr>
+            </tfoot>
+        </table>
     `
 });
 
 Vue.component('post', {
     props: ['post', 'handleState', 'chooseService'],
     template: `
-        <a class="link" v-bind:title="post.title" href="#" @click="handleState(post)">
+        <button type="button" class="link" v-bind:title="post.title" @click="handleState(post)">
             <template v-if="post.imageUrl !== ''">
                 <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
             </template>
-        </a>
+        </button>
     `
 });
 

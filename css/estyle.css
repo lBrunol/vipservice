@@ -342,3 +342,17 @@ p {
 		height: 0;
 	}
 }
+
+.table-orcamento th {
+	font-size: 16px;
+	text-transform: uppercase;
+}
+
+.table-orcamento td {
+	font-size: 14px;
+}
+
+.table-orcamento th,
+.table-orcamento td {
+	color: #fff;
+}
