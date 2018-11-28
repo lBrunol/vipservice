@@ -111,6 +111,18 @@ let app = new Vue({
         },
         nextStep: function(){
             this.step = this.step + 1;
+            if(this.step == 2){
+                setTimeout(function(){
+                    $('div.wpcf7 > form').each(function() {
+                        var $form = $(this);
+                        wpcf7.initForm($form);
+            
+                        if (wpcf7.cached) {
+                            wpcf7.refill($form);
+                        }
+                    });
+                }, 50);
+            }
         },
         previousStep: function(){
             this.step = this.step - 1;
@@ -128,7 +140,10 @@ let app = new Vue({
             }
         },
         writePostsPrice: function(){
-            return "R$ " + this.sumPostsPrice();
+            let sum = this.sumPostsPrice();
+            if(!isNaN(sum))                
+                return sum.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            return 0;
         },
         sumPostsPrice: function(){
             if(this.selectedPosts.length > 0){
@@ -182,14 +197,14 @@ Vue.component('selected-services', {
             <tbody>
                 <tr v-for="(post, index) in posts">
                     <td v-html="post.title"></td> 
-                    <td v-html="'R$ ' + post.price"></td>
-                    <td><button type="button" class="btn btn-danger" @click="removePost(index)">Remover</button></td>
+                    <td v-html="parseFloat(post.price).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})"></td>
+                    <td><button type="button" class="btn btn-xs btn-danger" @click="removePost(index)"><i class="icon-cancel"></i></button></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2">Total</td>
-                    <td><span v-html="writePostsPrice()"></span></td>
+                    <td><strong>Total</strong></td>
+                    <td colspan="2"><span v-html="writePostsPrice()"></span></td>
                 </tr>
             </tfoot>
         </table>

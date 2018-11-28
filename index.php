@@ -113,21 +113,22 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 									</div>
 								</div>
 							</template>
-							<button v-if="prevPosts.length > 0" class="btn btn-secondary" type="button" @click="previous(0)">Voltar</button>
+							<button v-if="prevPosts.length > 0" class="btn btn-white" type="button" @click="previous(0)">Voltar</button>
 						</div>
 					</div>
 				</div>
 				<div class="row" v-if="step == 2">
-					<div class="col-sm-6">
+					<div class="col-sm-12">
 						<?php echo do_shortcode('[contact-form-7 id="49" title="Orçamento"]'); ?>
-						<button class="btn btn-secondary" type="button" @click="previousStep()">Voltar</button>						
 					</div>
 				</div>
 				<div class="row" v-if="selectedPosts.length > 0">
 					<div class="col-sm-12">
 						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
 						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice}"></selected-services>
-						<button v-if="selectedPosts.length > 0" class="btn btn-success" type="button" @click="shouldNextStep()">Concluir</button>							
+						<button v-if="selectedPosts.length > 0 && step == 1" class="btn btn-white" type="button" @click="shouldNextStep()">Próximo passo</button>
+						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button">Finalizar</button>
+						<button class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
 					</div>
 				</div>
 			</div>
