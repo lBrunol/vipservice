@@ -15,7 +15,7 @@ class Post {
 let app = new Vue({
     el: '.orcamento',
     data: {
-        message : 'Olá',
+        message : '',
         loading: true,
         posts: [],
         prevPosts: [],
@@ -76,6 +76,7 @@ let app = new Vue({
             return roots;
         },
         handleState: function(post){
+            this.message = '';
             if(post.children.length > 0){
                 this.changeState(post.children);
             } else {
@@ -110,8 +111,19 @@ let app = new Vue({
             }
         },
         nextStep: function(){
-            this.step = this.step + 1;
+            let vm = this;
+            this.step = this.step + 1;            
             if(this.step == 2){
+                $('.wpcf7 form').on('DOMNodeInserted', function (e) {
+                    if ($(e.target).hasClass('wpcf7-mail-sent-ok')) {
+                        // $('.wpcf7-form .message').html('<div role="alert" class="alert alert-success text-center">' + $(e.target).text() + '</div>');
+                        vm.message = $(e.target).text();
+                        vm.reset();
+                    }
+            
+                    if ($(e.target).hasClass('wpcf7-validation-errors') || $(e.target).hasClass('wpcf7-mail-sent-ng'))
+                        $('.wpcf7-form .message').html('<div role="alert" class="alert alert-danger text-center">' + $(e.target).text() + '</div>');
+                });
                 setTimeout(function(){
                     $('div.wpcf7 > form').each(function() {
                         var $form = $(this);
@@ -138,6 +150,12 @@ let app = new Vue({
             if(this.selectedPosts[index] !== undefined){
                 this.selectedPosts.splice(index, 1);
             }
+        },
+        reset: function(){
+            this.clearPrevPosts();
+            this.selectedPosts = [];
+            this.posPosts = 0;
+            this.step = 1;
         },
         writePostsPrice: function(){
             let sum = this.sumPostsPrice();

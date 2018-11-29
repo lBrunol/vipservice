@@ -92,9 +92,8 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 	</div>
 </section>
 <?php endif; ?>
-
 <section class="orcamento">
-	<div class="container-contato" id="fale">
+	<div class="container-contato" id="fale">	
 	<h3 class="texto titulo-grande">FAÇA SEU ORÇAMENTO AGORA!</h3> 
     <div class="container">    
 		<div class="row">  
@@ -120,6 +119,13 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 				<div class="row" v-if="step == 2">
 					<div class="col-sm-12">
 						<?php echo do_shortcode('[contact-form-7 id="49" title="Orçamento"]'); ?>
+					</div>
+				</div>
+				<div class="row" v-if="message != ''">
+					<div class="col-sm-12">
+						<div class="alert alert-sucess">
+							{{ message }}
+						</div>
 					</div>
 				</div>
 				<div class="row" v-if="selectedPosts.length > 0">

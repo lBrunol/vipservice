@@ -358,9 +358,10 @@ p {
 }
 
 .form-control {
-	border: 0;
+	border-color: transparent;
 	color: #333;
 	margin-top: 5px;
+	border-width: 2px;
 }
 
 .form-label {
@@ -370,6 +371,7 @@ p {
 	font-weight: normal;
 	width: 100%;
 	display: inline-block;
+	position: relative;
 }
 
 .btn-white {
@@ -385,4 +387,31 @@ p {
 	color: #fff;
 	background-color: #114488;
     border-color: #114488;
+}
+
+.wpcf7-form-control-wrap {
+	position: static;
+}
+
+span.wpcf7-not-valid-tip {
+    color: #edff00;
+    font-size: 12px;
+    position: absolute;
+    right: 0;
+    top: 12px;
+}
+
+.form-control.wpcf7-not-valid {
+	border-color: #edff00;
+}
+
+.wpcf7-response-output {
+	display: none!important;
+}
+
+div.wpcf7 .ajax-loader {
+	width: 25px;
+	height: 25px;
+	background-size: 100%;
+	background-image: url('../images/loader-white.svg');
 }
