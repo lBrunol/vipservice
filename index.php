@@ -118,7 +118,40 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 				</div>
 				<div class="row" v-if="step == 2">
 					<div class="col-sm-12">
-						<?php echo do_shortcode('[contact-form-7 id="49" title="Orçamento"]'); ?>
+						<form action="#" method="post" novalidate="novalidate" class="wpcf7-form">
+							<div class="form-group">
+								<label class="form-label">Nome
+									<small>(obrigatório)</small>
+									<br>
+									<input type="text" name="your-name" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
+								</label>
+							</div>
+							<div class="form-group">
+								<label class="form-label">E-mail
+									<small>(obrigatório)</small>
+									<br>
+									<input type="email" name="your-email" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
+								</label>
+							</div>
+							<div class="form-group">
+								<label class="form-label">Telefone
+									<small>(obrigatório)</small>
+									<br>
+									<input type="text" name="your-subject" value="" size="40" aria-invalid="false" class="form-control">
+								</label>
+							</div>
+							<div class="form-group">
+								<label class="form-label">Mensagem
+									<br>
+									<textarea name="your-message" cols="40" rows="10" aria-invalid="false" class="form-control"></textarea>
+								</label>
+							</div>
+							<p>
+								<input type="submit" value="Enviar" class="wpcf7-form-control wpcf7-submit btn btn-white">
+								<span class="ajax-loader"></span>
+							</p>
+							<div class="message"></div>
+						</form>
 					</div>
 				</div>
 				<div class="row" v-if="message != ''">
