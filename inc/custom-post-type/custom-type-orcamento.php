@@ -22,7 +22,7 @@ function custom_type_orcamento() {
         'search_items' => 'Procurar Orçamentos',
         'not_found' =>  'Nenhum Orçamento encontrado',
         'not_found_in_trash' => 'Nenhum Orçamento encontrado na lixeira',
-        'menu_name' => 'Serviços de orçamentos',
+        'menu_name' => 'Orçamentos',
         'all_items' => 'Todos os orçamentos'
     );
 
@@ -59,19 +59,29 @@ function orcamento_meta_box() {
         'high'
     );
 }
-//Adiciona meta fields a API
+
 function orcamento_api() {
-    
-    register_rest_field( 'orcamento', 'orcamento_preco', 
-    	array(
-        	'get_callback' => 'theme_get_api'
-    	) 
+    //Meta Fields that should be added to the API 
+    $meta_fields = array(
+        'orcamento_nome',
+        'orcamento_email',
+        'orcamento_telefone',
+        'orcamento_mensagem',
+        'orcamento_servicos',
+        'orcamento_desconto',
+        'orcamento_status'
     );
-    register_rest_field( 'orcamento', 'has_children', 
-    	array(
-        	'get_callback' => 'theme_has_children'
-    	) 
-    );
+    //Iterate through all fields and add register each of them to the API
+    foreach ($meta_fields as $field) {
+        register_rest_field( 'orcamento',
+            $field,
+            array(
+                'get_callback'    => 'theme_get_api',
+                'update_callback' => 'theme_update_api',
+                'schema'          => null,
+            )
+        );
+    }
 }
 
 add_action( 'rest_api_init', 'orcamento_api' );
@@ -85,6 +95,9 @@ function orcamento_meta(){
     $orcamento_telefone = get_post_meta( $post->ID, 'orcamento_telefone', true );
     $orcamento_mensagem = get_post_meta( $post->ID, 'orcamento_mensagem', true );
     $orcamento_servicos = get_post_meta( $post->ID, 'orcamento_servicos', true );
+    $orcamento_desconto = get_post_meta( $post->ID, 'orcamento_desconto', true );
+    $orcamento_status = get_post_meta( $post->ID, 'orcamento_status', true );
+    $total = 0;
     
 ?>
     <div class="form-field">
@@ -103,9 +116,46 @@ function orcamento_meta(){
         <label for="orcamento_mensagem">Mensagem</label><br>
         <input type="text" name="orcamento_mensagem" id="orcamento_mensagem" value="<?php echo $orcamento_mensagem; ?>" />
     </div>
+    <p><strong>Serviços solicitados</strong></p>
     <?php if($orcamento_servicos) : ?>
-        <?= "ola" ?>
+        <?php if(count($orcamento_servicos) > 0) : ?>
+            <table>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Valor</th>
+                </tr>
+                <?php foreach($orcamento_servicos as $orc) : ?>
+                    <tr>
+                        <?php
+                            $servico = get_post($orc);
+                            if($servico){
+                                $preco = get_post_meta( $servico->ID, 'servico_orcamento_preco', true );
+                                $total += $preco;
+                                echo '<td>' . $servico->post_title . '</td><td> ' . $preco . '</td>';
+                            }
+                        ?>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <div class="form-field">
+                <label for="orcamento_desconto">Desconto</label><br>
+                <input type="text" name="orcamento_desconto" id="orcamento_desconto" value="" />
+            </div>
+            <p><strong><?= $total ?></strong></p>
+            <button type="button" class="button button-primary button-large">Enviar proposta ao cliente</button>
+            <button type="button" class="button button-secondary button-large">Imprimir</button>
+        <?php endif; ?>
     <?php endif ?>
+    <div class="form-field">
+        <label for="orcamento_status">Status</label><br>
+        <select>    
+            <option>Novo</option>
+            <option>Rejeitado</option>
+            <option>Negociando</option>
+            <option>Aprovado</option>
+            <option>Liquidado</option>
+        </select>
+    </div>
     <br>
 <?php
 }
@@ -115,10 +165,14 @@ add_action( 'save_post', 'save_orcamento_post' );
 
 function save_orcamento_post( $post_id ) {
     if (!isset( $_POST['_inline_edit'] )){
-        if ( get_post_type( $post_id ) == 'orcamento' && isset($_POST['orcamento_preco'])) {
+        if ( get_post_type( $post_id ) == 'orcamento') {
 
             $fields = [
-                'orcamento_preco',
+                'orcamento_nome',
+                'orcamento_email',
+                'orcamento_telefone',
+                'orcamento_mensagem',
+                'orcamento_servicos'
             ];
             $values = [];
 

@@ -149,6 +149,13 @@
         return get_post_meta( $object[ 'id' ], $field_name, true );
     }
 
+    /*
+    * Atualiza/Adiciona postmeta
+    */
+    function theme_update_api( $value, $object, $field_name ) {
+        return theme_save_post_meta( $object->ID, $field_name, $value );
+    }
+
     /**
      * Verifica se existem filhos
      */

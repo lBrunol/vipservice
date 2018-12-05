@@ -197,3 +197,4 @@ require_once get_template_directory() . '/inc/custom-images.php';
 require_once get_template_directory() . '/inc/custom-post-type/custom-type-banner.php';
 require_once get_template_directory() . '/inc/custom-post-type/custom-type-servicos.php';
 require_once get_template_directory() . '/inc/custom-post-type/custom-type-servicos-orcamentos.php';
+require_once get_template_directory() . '/inc/custom-post-type/custom-type-orcamento.php';
