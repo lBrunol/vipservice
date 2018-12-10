@@ -22,6 +22,7 @@ let app = new Vue({
         posPosts: 0,
         selectedPosts: [],
         step: 1,
+        isAuthenticate: false,
     },
     created: function(){
         this.debounceGetPosts = _.debounce(this.getPosts, 500);
@@ -75,13 +76,67 @@ let app = new Vue({
         
             return roots;
         },
+        authenticate: function(cb){
+            let vm = this;
+            if(localStorage.getItem('token') != null){
+                axios({
+                    method: 'post',
+                    url: '/wp-json/jwt-auth/v1/token/validate',
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(function(response){
+                    vm.isAuthenticate = true;
+                    if(typeof cb === 'function'){
+                        cb({ status: response.data.code, token: localStorage.getItem('token') });
+                    }
+                    console.log(response);
+                })
+                .catch(function(error){
+                    vm.isAuthenticate = false;
+                    if(typeof cb === 'function'){
+                        cb({ status: error.data.code });
+                    }
+                    console.log(error);
+                });
+            } else {
+                axios.post('/wp-json/jwt-auth/v1/token', { username: 'admin', password: 'dev' })
+                .then(function(response){
+                    vm.isAuthenticate = true;                    
+                    console.log(response);
+                    if(response.data.token){
+                        if(typeof cb === 'function'){
+                            localStorage.setItem('token', response.data.token);
+                            cb({ status: 'authenticated', token: response.data.token });
+                        }
+                    } else {
+                        cb({ status: error.data.code });                        
+                    }
+                })
+                .catch(function(error){
+                    vm.isAuthenticate = false;                    
+                    console.log(error);
+                    if(typeof cb === 'function'){
+                        cb({ status: error.data.code });
+                    }
+                });
+            }
+        },
         handleState: function(post){
             this.message = '';
-            if(post.children.length > 0){
-                this.changeState(post.children);
-            } else {
-                this.chooseService(post);
-            }
+            let vm = this;
+            this.authenticate(function(response){
+                if(vm.isAuthenticate){
+                    if(post.children.length > 0){
+                        vm.changeState(post.children);
+                    } else {
+                        vm.chooseService(post);
+                    }
+                } else {
+                    alert('deu merda')
+                }
+            });
         },
         changeState: function(param){
             this.prevPosts.push(this.posts);
