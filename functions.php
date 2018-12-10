@@ -191,6 +191,11 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 require_once get_template_directory() . '/inc/custom-theme-functions.php';
 require_once get_template_directory() . '/inc/custom-images.php';
 
+/**
+ * Endpoints customizados
+ */
+require_once get_template_directory() . '/inc/endpoints/endpoint-orcamento.php';
+
 /*
 * Custom post types
 */

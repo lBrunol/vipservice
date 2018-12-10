@@ -127,12 +127,8 @@ function orcamento_meta(){
                 <?php foreach($orcamento_servicos as $orc) : ?>
                     <tr>
                         <?php
-                            $servico = get_post($orc);
-                            if($servico){
-                                $preco = get_post_meta( $servico->ID, 'servico_orcamento_preco', true );
-                                $total += $preco;
-                                echo '<td>' . $servico->post_title . '</td><td> ' . $preco . '</td>';
-                            }
+                            $total += $orc['preco'];
+                            echo '<td>' . $orc['nome'] . '</td><td> ' . $orc['preco'] . '</td>';
                         ?>
                     </tr>
                 <?php endforeach; ?>
