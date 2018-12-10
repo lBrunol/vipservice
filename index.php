@@ -123,31 +123,31 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 								<label class="form-label">Nome
 									<small>(obrigatório)</small>
 									<br>
-									<input type="text" name="your-name" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
+									<input required type="text" name="nome" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
 								</label>
 							</div>
 							<div class="form-group">
 								<label class="form-label">E-mail
 									<small>(obrigatório)</small>
 									<br>
-									<input type="email" name="your-email" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
+									<input required type="email" name="email" value="" size="40" aria-required="true" aria-invalid="false" class="form-control">
 								</label>
 							</div>
 							<div class="form-group">
 								<label class="form-label">Telefone
 									<small>(obrigatório)</small>
 									<br>
-									<input type="text" name="your-subject" value="" size="40" aria-invalid="false" class="form-control">
+									<input required type="text" name="telefone" value="" size="40" aria-invalid="false" class="form-control">
 								</label>
 							</div>
 							<div class="form-group">
 								<label class="form-label">Mensagem
 									<br>
-									<textarea name="your-message" cols="40" rows="10" aria-invalid="false" class="form-control"></textarea>
+									<textarea required name="mensagem" cols="40" rows="10" aria-invalid="false" class="form-control"></textarea>
 								</label>
 							</div>
 							<p>
-								<input type="submit" value="Enviar" class="wpcf7-form-control wpcf7-submit btn btn-white">
+								<button type="submit" class="btn btn-white" @click="submitForm($event)">Enviar</button>
 								<span class="ajax-loader"></span>
 							</p>
 							<div class="message"></div>
@@ -160,7 +160,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 							{{ message }}
 						</div>
 					</div>
-				</div>
+				</div>				
 				<div class="row" v-if="selectedPosts.length > 0">
 					<div class="col-sm-12">
 						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
@@ -168,6 +168,13 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 						<button v-if="selectedPosts.length > 0 && step == 1" class="btn btn-white" type="button" @click="shouldNextStep()">Próximo passo</button>
 						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button">Finalizar</button>
 						<button class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
+					</div>
+				</div>
+				<div class="row" v-if="errorMessage != ''">
+					<div class="col-sm-12">
+						<div class="alert alert-danger">
+							{{ errorMessage }}
+						</div>
 					</div>
 				</div>
 			</div>

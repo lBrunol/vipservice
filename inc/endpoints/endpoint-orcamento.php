@@ -3,6 +3,8 @@
 
         $parameters = $request->get_params();
         $servicos = [];
+        $admin_mail = get_option('admin_email');
+        $headers = array('Content-Type: text/html; charset=UTF-8');
 
         $required_params = [
             [ 'type' => 'string', 'field' => 'nome' ],
@@ -80,6 +82,24 @@
 
             add_post_meta($orcamento_id, 'orcamento_desconto', 0);
             add_post_meta($orcamento_id, 'orcamento_status', 'Novo');
+
+            $preco = 0;
+            $content = "
+                <p><b>Nome: </b>" . $parameters['nome'] . "</p>" .
+                "<p><b>E-mail: </b>" . $parameters['email'] . "</p>" .
+                "<p><b>Mensagem: </b>" . $parameters['mensagem'] . "</p>" .
+                "<p><b>Serviço</b> - <b>Valor</b></p>"
+                ;
+
+            foreach($servicos as $servico){
+                $content .= "<p>" . $servico['nome'] . " - " . $servico['preco'] . "</p>";
+                $preco += $servico['preco'] * 1;
+            }
+            $content .= "<p><b>Total</b> - " . $preco . "</p>";
+
+            wp_mail( $admin_mail, 'Novo orçamento - ' . $parameters['nome'], $content, $headers);
+        } else {
+            return new WP_Error( 'post_not_inserted', 'Post não inserido', array( 'status' => 500 ) );
         }
 		
 		// Cria a resposta 

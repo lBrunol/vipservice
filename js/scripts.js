@@ -16,6 +16,7 @@ let app = new Vue({
     el: '.orcamento',
     data: {
         message : '',
+        errorMessage: '',
         loading: true,
         posts: [],
         prevPosts: [],
@@ -44,6 +45,82 @@ let app = new Vue({
                     console.log(error);
                     vm.loading = false;
                 })
+        },
+        submitForm: function(e){
+            e.preventDefault();
+            const vm = this;
+            const formValues = vm.getFormValues();
+            let budget = {};
+
+            vm.errorMessage = '';
+
+            for(let i = 0; i < formValues.length; i++){
+                if(formValues[i].value == ''){
+                    vm.errorMessage = 'O campo ' + formValues[i].name + ' é obrigatório.';
+                    break;
+                }
+            }
+
+            budget.nome = formValues[0].value;
+            budget.email = formValues[1].value;
+            budget.telefone = formValues[2].value;
+            budget.mensagem = formValues[3].value;
+
+            /*budget = formValues.map(function(item){
+                const obj = {};
+                obj[item.field] = item.name;
+                return obj;
+            });*/
+
+            if(vm.selectedPosts.length == 0){
+                vm.errorMessage = 'Não existem serviços selecionados';
+                return false;
+            }
+
+            budget.servicos = vm.selectedPosts.map(function(item){
+                return item.id;
+            });
+
+            vm.sendBudget(budget);
+        },
+        sendBudget: function(budget){
+            axios({
+                method: 'post',
+                url: '/wp-json/vipservice/v1/budget',
+                data: budget,
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+            .then(function(response){
+                console.log(response);
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+        },
+        getFormValues: function(){
+            const fields = [
+                { field: 'nome', type: 'text', name: 'Nome' },
+                { field: 'email', type: 'text', name: 'E-mail' },
+                { field: 'telefone', type: 'text', name: 'Telefone' },
+                { field: 'mensagem', type: 'textarea', name: 'Mensagem' }
+            ];
+
+            values = [];
+
+            fields.forEach(function(item){
+                let val = '';
+
+                if(item.type == 'text')
+                    val = $('input[name="' + item.field + '"]').val();
+                else if(item.type == 'textarea')
+                    val = $('textarea[name="' + item.field + '"]').val();
+
+                values.push({ field: item.field, value: val, name: item.name });
+            });
+
+            return values;
         },
         buildHierarchy: function(arr) {
 
