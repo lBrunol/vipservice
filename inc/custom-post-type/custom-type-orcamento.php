@@ -52,7 +52,7 @@ add_action('init', 'custom_type_orcamento');
 function orcamento_meta_box() {        
     add_meta_box(
         'meta_box_servico',
-        'Propriedades',
+        'Informações do orçamento',
         'orcamento_meta',
         'orcamento',
         'normal',
@@ -90,6 +90,7 @@ add_action( 'rest_api_init', 'orcamento_api' );
 function orcamento_meta(){
     global $post;
     
+    setlocale(LC_MONETARY, 'pt_BR.UTF-8');
     $orcamento_nome = get_post_meta( $post->ID, 'orcamento_nome', true );
     $orcamento_email = get_post_meta( $post->ID, 'orcamento_email', true );
     $orcamento_telefone = get_post_meta( $post->ID, 'orcamento_telefone', true );
@@ -97,9 +98,23 @@ function orcamento_meta(){
     $orcamento_servicos = get_post_meta( $post->ID, 'orcamento_servicos', true );
     $orcamento_desconto = get_post_meta( $post->ID, 'orcamento_desconto', true );
     $orcamento_status = get_post_meta( $post->ID, 'orcamento_status', true );
+    $orcamento_time = get_post_meta( $post->ID, 'orcamento_data', true );
+
+    if($orcamento_time){
+        $orcamento_data = explode(' ', $orcamento_time)[0];
+        $orcamento_hora = explode(' ', $orcamento_time)[1];
+    }
     $total = 0;
     
 ?>
+    <div class="form-field">
+        <label for="orcamento_data">Data</label><br>
+        <input type="text" name="orcamento_data" id="orcamento_data" disabled value="<?php echo $orcamento_data; ?>" />
+    </div>
+    <div class="form-field">
+        <label for="orcamento_hora">Hora</label><br>
+        <input type="text" name="orcamento_hora" id="orcamento_hora" disabled value="<?php echo $orcamento_hora; ?>" />
+    </div>
     <div class="form-field">
         <label for="orcamento_nome">Nome</label><br>
         <input type="text" name="orcamento_nome" id="orcamento_nome" value="<?php echo $orcamento_nome; ?>" />
@@ -128,28 +143,31 @@ function orcamento_meta(){
                     <tr>
                         <?php
                             $total += $orc['preco'];
-                            echo '<td>' . $orc['nome'] . '</td><td> ' . $orc['preco'] . '</td>';
+                            echo '<td>' . $orc['nome'] . '</td><td> ' . money_format('%n', $orc['preco']) . '</td>';
                         ?>
                     </tr>
                 <?php endforeach; ?>
             </table>
-            <div class="form-field">
-                <label for="orcamento_desconto">Desconto</label><br>
-                <input type="text" name="orcamento_desconto" id="orcamento_desconto" value="" />
-            </div>
-            <p><strong><?= $total ?></strong></p>
-            <button type="button" class="button button-primary button-large">Enviar proposta ao cliente</button>
-            <button type="button" class="button button-secondary button-large">Imprimir</button>
+            <p><strong>Total:</strong> <?= money_format('%n', $total) ?></p>
         <?php endif; ?>
     <?php endif ?>
     <div class="form-field">
         <label for="orcamento_status">Status</label><br>
-        <select>    
-            <option>Novo</option>
-            <option>Rejeitado</option>
-            <option>Negociando</option>
-            <option>Aprovado</option>
-            <option>Liquidado</option>
+        <select>
+            <?php 
+                $choices = [
+                    'Novo',
+                    'Rejeitado',
+                    'Negociando',
+                    'Aprovado',
+                    'Liquidado',
+                ];
+
+                foreach($choices as $choice) :
+                    $selected = $orcamento_status === $choice ? 'selected' : '';
+            ?>
+                <option <?= $selected ?> value="<?= $choice; ?>"><?= $choice; ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
     <br>
@@ -168,7 +186,8 @@ function save_orcamento_post( $post_id ) {
                 'orcamento_email',
                 'orcamento_telefone',
                 'orcamento_mensagem',
-                'orcamento_servicos'
+                'orcamento_status',
+                'orcamento_desconto',
             ];
             $values = [];
 

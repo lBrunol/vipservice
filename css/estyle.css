@@ -409,9 +409,11 @@ span.wpcf7-not-valid-tip {
 	display: none!important;
 }
 
-div.wpcf7 .ajax-loader {
+.ajax-loader {
 	width: 25px;
 	height: 25px;
 	background-size: 100%;
 	background-image: url('../images/loader-white.svg');
+	display: inline-block;
+    vertical-align: middle;
 }

@@ -5,11 +5,11 @@
         $servicos = [];
         $admin_mail = get_option('admin_email');
         $headers = array('Content-Type: text/html; charset=UTF-8');
+        $now = new DateTime("now");
 
         $required_params = [
             [ 'type' => 'string', 'field' => 'nome' ],
             [ 'type' => 'string', 'field' => 'email' ],
-            [ 'type' => 'string', 'field' => 'mensagem' ],
             [ 'type' => 'array', 'field' => 'servicos' ],
         ];
 
@@ -82,10 +82,12 @@
 
             add_post_meta($orcamento_id, 'orcamento_desconto', 0);
             add_post_meta($orcamento_id, 'orcamento_status', 'Novo');
+            add_post_meta($orcamento_id, 'orcamento_data',  $now->format("d/m/Y H:i"));
 
             $preco = 0;
             $content = "
-                <p><b>Nome: </b>" . $parameters['nome'] . "</p>" .
+                <p><b>Data: </b>" . $now->format("d/m/Y H:i") . "</p>" .
+                "<p><b>Nome: </b>" . $parameters['nome'] . "</p>" .
                 "<p><b>E-mail: </b>" . $parameters['email'] . "</p>" .
                 "<p><b>Mensagem: </b>" . $parameters['mensagem'] . "</p>" .
                 "<p><b>Serviço</b> - <b>Valor</b></p>"

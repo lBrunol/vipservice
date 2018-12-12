@@ -18,12 +18,19 @@ let app = new Vue({
         message : '',
         errorMessage: '',
         loading: true,
+        sendingBudget: false,
         posts: [],
         prevPosts: [],
         posPosts: 0,
         selectedPosts: [],
         step: 1,
         isAuthenticate: false,
+        fields: [
+            { field: 'nome', type: 'text', name: 'Nome', required: true },
+            { field: 'email', type: 'text', name: 'E-mail', required: true },
+            { field: 'telefone', type: 'text', name: 'Telefone', required: true },
+            { field: 'mensagem', type: 'textarea', name: 'Mensagem', required: false }
+        ]
     },
     created: function(){
         this.debounceGetPosts = _.debounce(this.getPosts, 500);
@@ -46,31 +53,54 @@ let app = new Vue({
                     vm.loading = false;
                 })
         },
-        submitForm: function(e){
-            e.preventDefault();
-            const vm = this;
-            const formValues = vm.getFormValues();
-            let budget = {};
+        clearForm: function(){
+            this.fields.forEach(function(item){
+                if(item.type == 'text')
+                    $('input[name="' + item.field + '"]').val('');
+                else if(item.type == 'textarea')
+                    $('textarea[name="' + item.field + '"]').val('');
+            });
+        },
+        getFormValues: function(){
+            const formValues = [];
 
+            this.fields.forEach(function(item){
+                let val = '';
+                if(item.type == 'text')
+                    val = $('input[name="' + item.field + '"]').val();
+                else if(item.type == 'textarea')
+                    val = $('textarea[name="' + item.field + '"]').val();
+
+                formValues.push({ field: item.field, value: val, name: item.name, required: item.required });
+            });
+
+            return formValues;
+        },
+        validateFormValues: function(formValues){
+            const vm = this;
             vm.errorMessage = '';
 
             for(let i = 0; i < formValues.length; i++){
-                if(formValues[i].value == ''){
+                if(formValues[i].value == '' && formValues[i].required === true){
                     vm.errorMessage = 'O campo ' + formValues[i].name + ' é obrigatório.';
-                    break;
+                    return false;
                 }
             }
+            return true;
+        },
+        /**
+         * Constrói o objeto 'Budget' (orçamento)
+         * 
+         * @param {Array} formValues 
+         * @return Boolean|Array Falso caso não existam posts selecionados e Objeto caso a formação do orçamento ocorra.
+         */
+        buildBudget: function(formValues){
+            const vm = this;
+            let budget = {};
 
-            budget.nome = formValues[0].value;
-            budget.email = formValues[1].value;
-            budget.telefone = formValues[2].value;
-            budget.mensagem = formValues[3].value;
-
-            /*budget = formValues.map(function(item){
-                const obj = {};
-                obj[item.field] = item.name;
-                return obj;
-            });*/
+            formValues.forEach(function(item){
+                budget[item.field] = item.value;
+            });  
 
             if(vm.selectedPosts.length == 0){
                 vm.errorMessage = 'Não existem serviços selecionados';
@@ -81,47 +111,54 @@ let app = new Vue({
                 return item.id;
             });
 
-            vm.sendBudget(budget);
+            return budget;
+        },
+        submitForm: function(e){
+            e.preventDefault();
+            const vm = this;
+            const formValues = vm.getFormValues();
+            
+            if(this.validateFormValues(formValues)){
+                let budget = this.buildBudget(formValues);
+                if(budget){
+                    vm.sendBudget(budget);
+                }  
+            }
         },
         sendBudget: function(budget){
-            axios({
-                method: 'post',
-                url: '/wp-json/vipservice/v1/budget',
-                data: budget,
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
-            })
-            .then(function(response){
-                console.log(response);
-            })
-            .catch(function(error){
-                console.log(error);
-            });
-        },
-        getFormValues: function(){
-            const fields = [
-                { field: 'nome', type: 'text', name: 'Nome' },
-                { field: 'email', type: 'text', name: 'E-mail' },
-                { field: 'telefone', type: 'text', name: 'Telefone' },
-                { field: 'mensagem', type: 'textarea', name: 'Mensagem' }
-            ];
+            const vm = this;
+            
+            vm.sendingBudget = true;
 
-            values = [];
-
-            fields.forEach(function(item){
-                let val = '';
-
-                if(item.type == 'text')
-                    val = $('input[name="' + item.field + '"]').val();
-                else if(item.type == 'textarea')
-                    val = $('textarea[name="' + item.field + '"]').val();
-
-                values.push({ field: item.field, value: val, name: item.name });
-            });
-
-            return values;
-        },
+            if(this.isAuthenticate){
+                axios({
+                    method: 'post',
+                    url: '/wp-json/vipservice/v1/budget',
+                    data: budget,
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(function(response){
+                    console.log(response);
+                    if(response.data.ID > 0){
+                        vm.message = 'Orçamento enviado com sucesso. Dentro de XX dias você receberá um retorno.';
+                        vm.reset();
+                    } else {
+                        vm.errorMessage = 'Não foi possível enviar o orçamento. Por favor, entre em contato através do telefone (11) 9999-9999.';
+                    }
+                    vm.sendingBudget = false;
+                })
+                .catch(function(error){
+                    console.log(error);
+                    vm.errorMessage = 'Não foi possível enviar o orçamento. Por favor, entre em contato através do telefone (11) 9999-9999.';
+                    vm.sendingBudget = false;
+                });
+            } else {
+                vm.errorMessage = 'Não foi possível enviar o orçamento devido a problemas na autenticação. Por favor, entre em contato através do telefone (11) 9999-9999.';
+                vm.sendingBudget = false;
+            }
+        },        
         buildHierarchy: function(arr) {
 
             let roots = [];
@@ -192,7 +229,7 @@ let app = new Vue({
                     }
                 })
                 .catch(function(error){
-                    vm.isAuthenticate = false;                    
+                    vm.isAuthenticate = false;
                     console.log(error);
                     if(typeof cb === 'function'){
                         cb({ status: error.data.code });
@@ -285,6 +322,7 @@ let app = new Vue({
         },
         reset: function(){
             this.clearPrevPosts();
+            this.clearForm();
             this.selectedPosts = [];
             this.posPosts = 0;
             this.step = 1;

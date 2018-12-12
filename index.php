@@ -146,30 +146,16 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 									<textarea required name="mensagem" cols="40" rows="10" aria-invalid="false" class="form-control"></textarea>
 								</label>
 							</div>
-							<p>
-								<button type="submit" class="btn btn-white" @click="submitForm($event)">Enviar</button>
-								<span class="ajax-loader"></span>
-							</p>
-							<div class="message"></div>
 						</form>
 					</div>
 				</div>
 				<div class="row" v-if="message != ''">
 					<div class="col-sm-12">
-						<div class="alert alert-sucess">
+						<div class="alert alert-success">
 							{{ message }}
 						</div>
 					</div>
 				</div>				
-				<div class="row" v-if="selectedPosts.length > 0">
-					<div class="col-sm-12">
-						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
-						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice}"></selected-services>
-						<button v-if="selectedPosts.length > 0 && step == 1" class="btn btn-white" type="button" @click="shouldNextStep()">Próximo passo</button>
-						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button">Finalizar</button>
-						<button class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
-					</div>
-				</div>
 				<div class="row" v-if="errorMessage != ''">
 					<div class="col-sm-12">
 						<div class="alert alert-danger">
@@ -177,6 +163,16 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 						</div>
 					</div>
 				</div>
+				<div class="row" v-if="selectedPosts.length > 0">
+					<div class="col-sm-12">
+						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
+						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice}"></selected-services>
+						<button v-if="selectedPosts.length > 0 && step == 1" class="btn btn-white" type="button" @click="shouldNextStep()">Próximo passo</button>
+						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="submitForm($event)">Finalizar</button>
+						<button v-if="step > 1" class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
+						<span v-if="sendingBudget" class="ajax-loader"></span>
+					</div>
+				</div>				
 			</div>
 		</div> 
 	</div>
