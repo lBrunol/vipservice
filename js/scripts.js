@@ -46,6 +46,7 @@ let app = new Vue({
                         let ordernedPosts = vm.buildHierarchy(posts);
                         vm.posts = ordernedPosts;
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     vm.loading = false;
                 })
                 .catch(function(error){
@@ -402,7 +403,7 @@ Vue.component('selected-services', {
 Vue.component('post', {
     props: ['post', 'handleState', 'chooseService'],
     template: `
-        <button type="button" class="link" v-bind:title="post.title" @click="handleState(post)">
+        <button type="button" class="link" v-bind:title="post.title" @click="handleState(post)" data-toggle="tooltip">
             <template v-if="post.imageUrl !== ''">
                 <img class="card-img-top" v-bind:src="post.imageUrl" alt="Card image cap">
             </template>

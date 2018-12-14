@@ -99,20 +99,23 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 		<div class="row">  
         	<div class="col-sm-6"> 
 				<?php echo $page_orcamento->post_content ?>
-				<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader" />
           	</div>
-			<div class="col-md-6">
+			<div class="col-sm-6">
+				<h4 class="titulo-orcamento titulo-medio">SELECIONE O SERVIÇO DESEJADO!</h4>
+				<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader block-center" />
 				<div class="row" v-if="step == 1">
 					<div class="col-sm-12">
 						<div class="servicos-orcamento">
 							<template v-if="posts.length > 0">
-								<div class="col-md-3" v-for="post in posts">
-									<div :class="'post --first' + post.id">
-										<post class="box-post" v-bind="{post, handleState, chooseService}"></post>
+								<div class="row">
+									<div class="col-md-4" v-for="post in posts">
+										<div :class="'post --first' + post.id">
+											<post class="box-post" v-bind="{post, handleState, chooseService}"></post>
+										</div>
 									</div>
 								</div>
 							</template>
-							<button v-if="prevPosts.length > 0" class="btn btn-white" type="button" @click="previous(0)">Voltar</button>
+							<button v-if="prevPosts.length > 0" class="btn btn-white btn-orcamento" type="button" @click="previous(0)">Voltar</button>
 						</div>
 					</div>
 				</div>

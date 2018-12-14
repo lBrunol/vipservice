@@ -38,6 +38,17 @@ p {
 	font-size: 20px;
 }
 
+.titulo-orcamento {
+	color: #fff;
+    margin: 0 0 30px 0;
+}
+
+.block-center {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
 .espaco-quemsomos {
 	margin-top: 50px;
 }
@@ -202,12 +213,7 @@ p {
 
 .box {
 	background-color: #fff;
-    width: 550px;
-    padding-top: 45px;
-    padding-bottom: 45px;
-    padding-left: 15px;
-    height: 530px;
-    margin-top: 45px 20px 80px 30px;
+    padding: 15px;
     margin-bottom: 20px;
 }
 
@@ -250,6 +256,15 @@ p {
 	align-items: center;
 	background-color: #fff;
 	min-height: 138px;
+	width: 100%;
+	border: none;
+	transition: .2s ease-in-out all;
+}
+
+.box-post:hover,
+.box-post:focus,
+.box-post:active {
+	transform: translate3d(5px, -5px, -135px)
 }
 
 .hide-animated {
@@ -416,4 +431,35 @@ span.wpcf7-not-valid-tip {
 	background-image: url('../images/loader-white.svg');
 	display: inline-block;
     vertical-align: middle;
+}
+
+ul.lista-orcamento {
+    list-style: none;
+}
+.lista-orcamento li {
+	margin-bottom: 10px;
+	font-size: 18px;
+}
+
+.lista-orcamento-image {
+	margin-right: 5px;
+}
+
+.btn-orcamento {
+	margin-top: 40px;
+	display: block; 
+}
+
+.alert-success {
+	color: #ffffff;
+	background-color: #5a9841;
+	border: none;
+    margin-top: 30px;
+}
+
+.alert-danger {
+	color: #ffffff;
+    background-color: #e83f3f;
+	border-color: none;
+    margin-top: 30px;	
 }
