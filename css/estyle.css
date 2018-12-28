@@ -246,7 +246,7 @@ p {
 .topo {
 	position: absolute;
 	z-index: 2;
-	top: 0;
+	top: 60px;
 	width: 100%;
 }
 
@@ -404,6 +404,11 @@ p {
     border-color: #114488;
 }
 
+.btn-white.-smaller {
+	padding: 3px 12px;
+    font-size: 12px;
+}
+
 .wpcf7-form-control-wrap {
 	position: static;
 }
@@ -462,4 +467,24 @@ ul.lista-orcamento {
     background-color: #e83f3f;
 	border-color: none;
     margin-top: 30px;	
+}
+
+.header-bar {
+	background-color: #4073b5;
+	padding: 10px 0;
+	color: #fff;
+	font-family: 'Montserrat';
+	font-size: 12px;
+}
+
+
+.bigger {
+	font-size: 20px;
+	line-height: 12px;
+}
+
+.horario-funcionamento .icon,
+.telefones-contato .icon {
+	display: inline-block;
+	vertical-align: middle;
 }

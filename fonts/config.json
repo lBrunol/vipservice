@@ -211,6 +211,12 @@
       "css": "cancel",
       "code": 59407,
       "src": "entypo"
+    },
+    {
+      "uid": "9f7e588c66cfd6891f6f507cf6f6596b",
+      "css": "phone",
+      "code": 59408,
+      "src": "fontawesome"
     }
   ]
 }

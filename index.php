@@ -103,7 +103,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 			<div class="col-sm-6">
 				<h4 class="titulo-orcamento titulo-medio">SELECIONE O SERVIÇO DESEJADO!</h4>
 				<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader block-center" />
-				<div class="row" v-if="step == 1">
+				<div class="row" v-if="step == 2">
 					<div class="col-sm-12">
 						<div class="servicos-orcamento">
 							<template v-if="posts.length > 0">
@@ -119,7 +119,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 						</div>
 					</div>
 				</div>
-				<div class="row" v-if="step == 2">
+				<div class="row" v-if="step == 1">
 					<div class="col-sm-12">
 						<form action="#" method="post" novalidate="novalidate" class="wpcf7-form">
 							<div class="form-group">
@@ -166,12 +166,12 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 						</div>
 					</div>
 				</div>
-				<div class="row" v-if="selectedPosts.length > 0">
+				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="titulo-medio" style="color: #fff;">Serviços selecionados</h3>
-						<selected-services v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice}"></selected-services>
-						<button v-if="selectedPosts.length > 0 && step == 1" class="btn btn-white" type="button" @click="shouldNextStep()">Próximo passo</button>
-						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="submitForm($event)">Finalizar</button>
+						<h3 class="titulo-medio" style="color: #fff;"  v-if="selectedPosts.length > 0">Serviços selecionados</h3>
+						<selected-services  v-if="selectedPosts.length > 0" v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice, writeDiscountPrice: writeDiscountPrice, discount: discount}"></selected-services>
+						<button v-if="step == 1" class="btn btn-white" type="button" @click="submitForm($event)">Próximo passo</button>
+						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="sendBudget()">Finalizar</button>
 						<button v-if="step > 1" class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
 						<span v-if="sendingBudget" class="ajax-loader"></span>
 					</div>

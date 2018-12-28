@@ -38,7 +38,25 @@
 </head>
 
 <body <?php body_class(); ?>>
-
+<div class="header-bar">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="horario-funcionamento">
+					<i class="icon-clock"></i> <span>Horário de funcionamento</span> Seg. a Sex. 09h as 18h. Sáb. 09h as 14h
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="telefones-contato">
+					<i class="icon icon-phone"></i> <span>Contatos</span> <span class="bigger">·</span> (11) 96772-8616 <span class="bigger">·</span> (11) 2402-1104 <span class="bigger">·</span> (11) 94776-6398
+				</div>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-white -smaller">Faça seu orçamento</button>
+			</div>
+		</div>
+	</div>
+</div>
 <section class="banner">
 	<?php 
 		if ( $banners -> have_posts() ) : 

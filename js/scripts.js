@@ -30,11 +30,35 @@ let app = new Vue({
             { field: 'email', type: 'text', name: 'E-mail', required: true },
             { field: 'telefone', type: 'text', name: 'Telefone', required: true },
             { field: 'mensagem', type: 'textarea', name: 'Mensagem', required: false }
-        ]
+        ],
+        budget: {},
+        discount: 0
     },
     created: function(){
-        this.debounceGetPosts = _.debounce(this.getPosts, 500);
-        this.debounceGetPosts();
+        const vm = this;
+        vm.debounceGetPosts = _.debounce(vm.getPosts, 500);
+        vm.debounceGetPosts();
+        (function(){
+            $('.wpcf7 form').on('DOMNodeInserted', function (e) {
+                if ($(e.target).hasClass('wpcf7-mail-sent-ok')) {
+                    vm.message = $(e.target).text();
+                    vm.reset();
+                }
+        
+                if ($(e.target).hasClass('wpcf7-validation-errors') || $(e.target).hasClass('wpcf7-mail-sent-ng'))
+                    $('.wpcf7-form .message').html('<div role="alert" class="alert alert-danger text-center">' + $(e.target).text() + '</div>');
+            });
+            setTimeout(function(){
+                $('div.wpcf7 > form').each(function() {
+                    var $form = $(this);
+                    wpcf7.initForm($form);
+        
+                    if (wpcf7.cached) {
+                        wpcf7.refill($form);
+                    }
+                });
+            }, 50);
+        })();
     },
     methods: {
         getPosts: function(){
@@ -103,14 +127,14 @@ let app = new Vue({
                 budget[item.field] = item.value;
             });  
 
-            if(vm.selectedPosts.length == 0){
+            /*if(vm.selectedPosts.length == 0){
                 vm.errorMessage = 'Não existem serviços selecionados';
                 return false;
             }
 
             budget.servicos = vm.selectedPosts.map(function(item){
                 return item.id;
-            });
+            });*/
 
             return budget;
         },
@@ -122,42 +146,59 @@ let app = new Vue({
             if(this.validateFormValues(formValues)){
                 let budget = this.buildBudget(formValues);
                 if(budget){
-                    vm.sendBudget(budget);
+                    this.budget = budget;
+                    this.nextStep();
                 }  
             }
         },
-        sendBudget: function(budget){
+        addBudget: function(){
+            const vm = this;
+
+            if(vm.selectedPosts.length == 0){
+                vm.errorMessage = 'Não existem serviços selecionados';
+                return false;
+            }
+
+            vm.budget.servicos = vm.selectedPosts.map(function(item){
+                return item.id;
+            });
+
+            return true;
+        },
+        sendBudget: function(){
             const vm = this;
             
             vm.sendingBudget = true;
 
-            if(this.isAuthenticate){
-                axios({
-                    method: 'post',
-                    url: '/wp-json/vipservice/v1/budget',
-                    data: budget,
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token')
-                    }
-                })
-                .then(function(response){
-                    console.log(response);
-                    if(response.data.ID > 0){
-                        vm.message = 'Orçamento enviado com sucesso. Dentro de XX dias você receberá um retorno.';
-                        vm.reset();
-                    } else {
+            if(vm.addBudget()){
+                if(this.isAuthenticate){
+                    axios({
+                        method: 'post',
+                        url: '/wp-json/vipservice/v1/budget',
+                        data: vm.budget,
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
+                    })
+                    .then(function(response){
+                        console.log(response);
+                        if(response.data.ID > 0){
+                            vm.message = 'Orçamento enviado com sucesso. Dentro de XX dias você receberá um retorno.';
+                            vm.reset();
+                        } else {
+                            vm.errorMessage = 'Não foi possível enviar o orçamento. Por favor, entre em contato através do telefone (11) 9999-9999.';
+                        }
+                        vm.sendingBudget = false;
+                    })
+                    .catch(function(error){
+                        console.log(error);
                         vm.errorMessage = 'Não foi possível enviar o orçamento. Por favor, entre em contato através do telefone (11) 9999-9999.';
-                    }
+                        vm.sendingBudget = false;
+                    });
+                } else {
+                    vm.errorMessage = 'Não foi possível enviar o orçamento devido a problemas na autenticação. Por favor, entre em contato através do telefone (11) 9999-9999.';
                     vm.sendingBudget = false;
-                })
-                .catch(function(error){
-                    console.log(error);
-                    vm.errorMessage = 'Não foi possível enviar o orçamento. Por favor, entre em contato através do telefone (11) 9999-9999.';
-                    vm.sendingBudget = false;
-                });
-            } else {
-                vm.errorMessage = 'Não foi possível enviar o orçamento devido a problemas na autenticação. Por favor, entre em contato através do telefone (11) 9999-9999.';
-                vm.sendingBudget = false;
+                }
             }
         },        
         buildHierarchy: function(arr) {
@@ -281,30 +322,7 @@ let app = new Vue({
             }
         },
         nextStep: function(){
-            let vm = this;
             this.step = this.step + 1;            
-            if(this.step == 2){
-                $('.wpcf7 form').on('DOMNodeInserted', function (e) {
-                    if ($(e.target).hasClass('wpcf7-mail-sent-ok')) {
-                        // $('.wpcf7-form .message').html('<div role="alert" class="alert alert-success text-center">' + $(e.target).text() + '</div>');
-                        vm.message = $(e.target).text();
-                        vm.reset();
-                    }
-            
-                    if ($(e.target).hasClass('wpcf7-validation-errors') || $(e.target).hasClass('wpcf7-mail-sent-ng'))
-                        $('.wpcf7-form .message').html('<div role="alert" class="alert alert-danger text-center">' + $(e.target).text() + '</div>');
-                });
-                setTimeout(function(){
-                    $('div.wpcf7 > form').each(function() {
-                        var $form = $(this);
-                        wpcf7.initForm($form);
-            
-                        if (wpcf7.cached) {
-                            wpcf7.refill($form);
-                        }
-                    });
-                }, 50);
-            }
         },
         previousStep: function(){
             this.step = this.step - 1;
@@ -330,15 +348,29 @@ let app = new Vue({
         },
         writePostsPrice: function(){
             let sum = this.sumPostsPrice();
+
+            if(sum > 199){
+                this.discount = sum * 0.15;
+            } else if(sum > 399){
+                this.discount = sum * 0.2;
+            } else {
+                this.discount = 0;
+            }
+
             if(!isNaN(sum))                
                 return sum.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
             return 0;
         },
+        writeDiscountPrice: function(){
+            if(!isNaN(this.discount))                
+                return this.discount.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        },
         sumPostsPrice: function(){
             if(this.selectedPosts.length > 0){
-                return this.selectedPosts.reduce(function(prevVal, item){
+                let total = this.selectedPosts.reduce(function(prevVal, item){
                     return prevVal + (item.price * 1);
                 }, 0);
+                return total - this.discount;
             }
             return 0;
         },
@@ -373,7 +405,7 @@ let app = new Vue({
 });
 
 Vue.component('selected-services', {
-    props:['posts', 'removePost', 'writePostsPrice'],
+    props:['posts', 'removePost', 'writePostsPrice', 'writeDiscountPrice', 'discount'],
     template: `
         <table class="table table-orcamento">
             <thead>
@@ -391,6 +423,10 @@ Vue.component('selected-services', {
                 </tr>
             </tbody>
             <tfoot>
+                <tr v-if="discount > 0">
+                    <td><strong>Desconto</strong></td>
+                    <td colspan="2"><span v-html="writeDiscountPrice()"></span></td>
+                </tr>
                 <tr>
                     <td><strong>Total</strong></td>
                     <td colspan="2"><span v-html="writePostsPrice()"></span></td>
