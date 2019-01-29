@@ -148,6 +148,17 @@ function orcamento_meta(){
                     </tr>
                 <?php endforeach; ?>
             </table>
+            <?php 
+                if($total > 199){
+                    $desconto = $total * 0.15;
+                } else if($total > 399){
+                    $desconto = $total * 0.2;
+                } else {
+                    $desconto = 0;
+                }
+                $total -= $desconto;
+            ?>
+            <p><strong>Desconto:</strong> <?= money_format('%n', $desconto) ?></p>
             <p><strong>Total:</strong> <?= money_format('%n', $total) ?></p>
         <?php endif; ?>
     <?php endif ?>

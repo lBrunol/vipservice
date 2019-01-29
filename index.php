@@ -102,7 +102,6 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
           	</div>
 			<div class="col-sm-6">
 				<h4 class="titulo-orcamento titulo-medio">SELECIONE O SERVIÇO DESEJADO!</h4>
-				<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader block-center" />
 				<div class="row" v-if="step == 2">
 					<div class="col-sm-12">
 						<div class="servicos-orcamento">
@@ -115,7 +114,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 									</div>
 								</div>
 							</template>
-							<button v-if="prevPosts.length > 0" class="btn btn-white btn-orcamento" type="button" @click="previous(0)">Voltar</button>
+							<button v-if="prevPosts.length > 0" class="btn btn-white btn-orcamento" type="button" @click="previous(0)">Anterior</button>
 						</div>
 					</div>
 				</div>
@@ -150,6 +149,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 								</label>
 							</div>
 						</form>
+						<img v-if="loading" src="/wp-content/themes/vipservice/images/loader-white.svg" alt="" class="floater-gallery-image -loader block-center" />
 					</div>
 				</div>
 				<div class="row" v-if="message != ''">
@@ -170,9 +170,9 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 					<div class="col-sm-12">
 						<h3 class="titulo-medio" style="color: #fff;"  v-if="selectedPosts.length > 0">Serviços selecionados</h3>
 						<selected-services  v-if="selectedPosts.length > 0" v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice, writeDiscountPrice: writeDiscountPrice, discount: discount}"></selected-services>
-						<button v-if="step == 1" class="btn btn-white" type="button" @click="submitForm($event)">Próximo passo</button>
+						<button v-if="step == 1" class="btn btn-white" type="button" @click="submitForm($event)">Selecionar serviços</button>
 						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="sendBudget()">Finalizar</button>
-						<button v-if="step > 1" class="btn btn-white" type="button" @click="previousStep()">Voltar</button>
+						<button v-if="step > 1" class="btn btn-white" type="button" @click="previousStep()">Ir ao formulário</button>
 						<span v-if="sendingBudget" class="ajax-loader"></span>
 					</div>
 				</div>				

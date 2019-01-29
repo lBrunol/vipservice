@@ -488,3 +488,7 @@ ul.lista-orcamento {
 	display: inline-block;
 	vertical-align: middle;
 }
+
+.servicos-orcamento {
+	margin-bottom: 25px;
+}

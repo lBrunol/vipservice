@@ -251,10 +251,15 @@ let app = new Vue({
                 })
                 .catch(function(error){
                     vm.isAuthenticate = false;
-                    if(typeof cb === 'function'){
-                        cb({ status: error.data.code });
-                    }
-                    console.log(error);
+                    if(error.data.code === 'jwt_auth_invalid_token'){
+                        localStorage.removeItem("token");
+                        vm.authenticate(cb);
+                    } else {
+                        if(typeof cb === 'function'){
+                            cb({ status: error.data.code });
+                        }
+                        console.log(error);
+                    }                    
                 });
             } else {
                 axios.post('/wp-json/jwt-auth/v1/token', { username: 'admin', password: 'dev' })
@@ -281,6 +286,7 @@ let app = new Vue({
         },
         handleState: function(post){
             this.message = '';
+            this.errorMessage = '';
             let vm = this;
             this.authenticate(function(response){
                 if(vm.isAuthenticate){
@@ -290,7 +296,7 @@ let app = new Vue({
                         vm.chooseService(post);
                     }
                 } else {
-                    alert('deu merda')
+                    vm.errorMessage = 'Ocorreu um erro ao recuperar os serviços. Entre em contato através do e-mail suporte@vipservice.com.br';
                 }
             });
         },
@@ -357,8 +363,10 @@ let app = new Vue({
                 this.discount = 0;
             }
 
-            if(!isNaN(sum))                
+            if(!isNaN(sum)){
+                sum -= this.discount;
                 return sum.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+            }
             return 0;
         },
         writeDiscountPrice: function(){
@@ -370,7 +378,7 @@ let app = new Vue({
                 let total = this.selectedPosts.reduce(function(prevVal, item){
                     return prevVal + (item.price * 1);
                 }, 0);
-                return total - this.discount;
+                return total;
             }
             return 0;
         },
