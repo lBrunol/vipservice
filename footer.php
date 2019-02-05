@@ -11,7 +11,7 @@
 
 ?>
 <div class="footer-line">
-	<hr />
+	<hr class="line"/>
 	<button class="btn btn-xs btn-up"><i class="icon-angle-left"></i></button>
 </div>
 <footer>
