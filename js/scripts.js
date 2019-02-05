@@ -145,6 +145,8 @@ let app = new Vue({
             
             if(this.validateFormValues(formValues)){
                 let budget = this.buildBudget(formValues);
+                vm.message = '';
+                
                 if(budget){
                     this.budget = budget;
                     this.nextStep();

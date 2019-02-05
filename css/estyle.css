@@ -455,6 +455,27 @@ ul.lista-orcamento {
 	display: block; 
 }
 
+.btn-blue {
+	background-color: #4073b5;
+	color: #fff;
+	position: fixed;
+	top: 45%;
+	border-radius: 0;
+	right: 0px;
+	z-index: 999;
+}
+
+.social-group {
+	width: 48px;
+	position: fixed;
+	top: 45%;
+	z-index: 999;
+}
+
+.social-group button {
+	border: none;
+}
+
 .alert-success {
 	color: #ffffff;
 	background-color: #5a9841;
@@ -491,4 +512,19 @@ ul.lista-orcamento {
 
 .servicos-orcamento {
 	margin-bottom: 25px;
+}
+
+.footer-line {
+	position: relative;
+}
+
+.footer-line .btn-up {
+	position: absolute;
+	right: 90px;
+	top: -10px;
+	transform: rotateZ(90deg);
+}
+
+.footer-line .btn-up i {
+	transform: rotateY(270deg);
 }

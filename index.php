@@ -46,6 +46,12 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 </section>
 <?php endif; ?>
 
+<button type="button" class="btn btn-blue">Solicite seu orçamento agora!</button>
+<div class="social-group">
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/whatsapp.JPG' ?>"></a>
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/facebook.jpg' ?>"></a>
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/instagram.jpg' ?>"></a>
+</div>
 <?php if($servicos_posts->have_posts()) : $servicos_posts->the_post(); ?>
 <section class="nossos-servicos" id="nossos-servicos" style="<?php echo 'background-image: url(' . get_template_directory_uri() . '/images/bg-servicos.PNG);' ?>">
     <h1 class="nossos-servicos-titulo titulo-grande">Nossos serviços</h1>
@@ -171,8 +177,8 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 						<h3 class="titulo-medio" style="color: #fff;"  v-if="selectedPosts.length > 0">Serviços selecionados</h3>
 						<selected-services  v-if="selectedPosts.length > 0" v-bind="{posts: selectedPosts, removePost: removePost, writePostsPrice: writePostsPrice, writeDiscountPrice: writeDiscountPrice, discount: discount}"></selected-services>
 						<button v-if="step == 1" class="btn btn-white" type="button" @click="submitForm($event)">Selecionar serviços</button>
-						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="sendBudget()">Finalizar</button>
 						<button v-if="step > 1" class="btn btn-white" type="button" @click="previousStep()">Ir ao formulário</button>
+						<button v-if="selectedPosts.length > 0 && step == 2" class="btn btn-white" type="button" @click="sendBudget()">Finalizar</button>
 						<span v-if="sendingBudget" class="ajax-loader"></span>
 					</div>
 				</div>				
