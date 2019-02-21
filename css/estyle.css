@@ -456,13 +456,20 @@ ul.lista-orcamento {
 }
 
 .btn-blue {
-	background-color: #4073b5;
+	background-color: #1d3758;
 	color: #fff;
 	position: fixed;
 	top: 45%;
 	border-radius: 0;
 	right: 0px;
 	z-index: 999;
+}
+
+.btn-blue:hover,
+.btn-blue:active,
+.btn-blue:focus {
+	background-color: #0f233d;
+	color: #fff;
 }
 
 .social-group {

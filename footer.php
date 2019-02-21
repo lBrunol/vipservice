@@ -10,9 +10,9 @@
  */
 
 ?>
-<div class="footer-line">
+<div class="footer-line scroll">
 	<hr class="line"/>
-	<button class="btn btn-xs btn-up"><i class="icon-angle-left"></i></button>
+	<a href="#header-bar" class="btn btn-xs btn-up"><i class="icon-angle-left"></i></a>
 </div>
 <footer>
 	<div class="container">

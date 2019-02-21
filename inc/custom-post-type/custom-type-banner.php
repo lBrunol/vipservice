@@ -35,7 +35,7 @@ function custom_type_banner() {
         'show_in_rest' => false,
 		'menu_position' => 5,
 		'menu_icon' => 'dashicons-format-image',
-		'supports' => array( 'title', 'thumbnail'),
+		'supports' => array( 'title', 'thumbnail', 'editor'),
         'register_meta_box_cb' => 'banner_meta_box',
         'rewrite' => false,
         'query_var' => false,
@@ -80,16 +80,21 @@ function banner_meta(){
     </div>    
     <br>
     <div class="form-field form-field-radio">
-        <label>Posição</label>
+        <label>Posição</label><br>
         <label class="radio-img">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/admin/banner-principal.jpg" />
             <input type="radio" name="banner_position" value="principal" <?php if ( $banner_position == 'principal' ) echo 'checked'; ?>>
-            Banner Principal
+            Banner Principal<br>
+            <img width="150" src="<?php echo get_template_directory_uri(); ?>/images/admin/banner-01.jpg" /><br><br>
         </label>
         <label class="radio-img">
-            <img src="<?php echo get_template_directory_uri(); ?>/images/admin/destaque-01.jpg" />
+            <input type="radio" name="banner_position" value="principal-video" <?php if ( $banner_position == 'principal-video' ) echo 'checked'; ?>>
+            Banner Principal (com vídeo)<br>
+            <img width="150" src="<?php echo get_template_directory_uri(); ?>/images/admin/banner-01.jpg" /><br><br>
+        </label>
+        <label class="radio-img">
             <input type="radio" name="banner_position" value="antes-depois" <?php if ( $banner_position == 'antes-depois' ) echo 'checked'; ?>>
-            Antes e depois
+            Antes e depois<br>
+            <img width="150" src="<?php echo get_template_directory_uri(); ?>/images/admin/banner-02.jpg" />
         </label>
     </div>
     <br>
@@ -136,12 +141,8 @@ $banner_image = new CustomPostImages(
     array( 'banners' ),
     array(
         '0' => array(
-            'title' => 'Antes <small><em>(640x390px)</em></small>',
+            'title' => 'Miniatura <small><em>(640x390px)</em></small>',
             'slug' => 'banner_img01'
-        ),
-        '1' => array(
-            'title' => 'Depois <small><em>(640x390px)</em></small>',
-            'slug' => 'banner_img02'
         )
 	),
     false

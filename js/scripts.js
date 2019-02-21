@@ -457,6 +457,8 @@ Vue.component('post', {
     `
 });
 
+var scroll = new SmoothScroll('.scroll a[href*="#"]');
+
 $(function(){
     $('.trabalhos-realizados-carousel .img-link').on('mouseenter', function(){
         if($(this).siblings('.img-link-antes').length > 0)

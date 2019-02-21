@@ -38,7 +38,7 @@
 </head>
 
 <body <?php body_class(); ?>>
-<div class="header-bar">
+<div class="header-bar" id="header-bar">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-5">
@@ -68,20 +68,24 @@
 				$nova_guia = !empty( get_post_meta( $banner -> ID, 'banner_target', true ) ) ? '_blank' : '_self';
 				$link = get_post_meta( $banner -> ID, 'banner_link', true );
     			$position = get_post_meta( $banner -> ID, 'banner_position', true);
-    			if ( $position == 'principal' ) :
+    			if ( $position == 'principal' || $position == 'principal-video' ) :
 			?>
-				<div class="item">
-					<?php if ( !empty( $link ) ) : ?>
-						<a href="<?php echo $link; ?>" target="<?php echo $nova_guia; ?>">
-					<?php endif; ?>
-
-					<img src="<?php echo $imagem[0]; ?>" alt="<?php echo get_the_title(); ?>" class="js-img-responsive img-responsive image" data-img-default="<?php echo $imagem[0]; ?>" />
-
-					<?php if ( !empty( $link ) ) : ?>
-						</a>
-					<?php endif; ?>
-				</div>
-				<?php endif; endforeach; ?>
+				<?php if($position == 'principal-video') : ?>
+					<div class="item-video">
+						<?php echo '<a class="owl-video" href="http://vipservice.dev.com.br/wp-content/uploads/2018/11/mov_bbb.mp4"></a>' ?>
+					</div>
+				<?php else : ?>
+					<div class="item">
+						<?php if ( !empty( $link ) ) : ?>
+							<a href="<?php echo $link; ?>" target="<?php echo $nova_guia; ?>">
+						<?php endif; ?>						
+							<img src="<?php echo $imagem[0]; ?>" alt="<?php echo get_the_title(); ?>" class="js-img-responsive img-responsive image" data-img-default="<?php echo $imagem[0]; ?>" />
+						<?php if ( !empty( $link ) ) : ?>
+							</a>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+			<?php endif; endforeach; ?>
 		</div>
 	<?php endif; ?>
 </section>
@@ -99,7 +103,8 @@
 				<?php if($menu_principal) : ?>
 					<ul class="nav navbar-nav menu-site">
 						<?php foreach($menu_principal as $item) : ?>
-							<li><a href="<?= $item->url ?>" target="<?= $item->target ?>"><?= $item->title ?></a></li>
+						
+							<li class="<?= implode(' ', $item->classes) ?>"><a href="<?= $item->url ?>" target="<?= $item->target ?>"><?= $item->title ?></a></li>
 						<?php endforeach ?>
 					</ul>
 				<?php endif;?>

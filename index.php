@@ -38,20 +38,21 @@ $page_quem_somos = get_page_by_path('quem-somos');
 $page_orcamento = get_page_by_path('faca-seu-orcamento');
 ?>
 
+<div class="scroll"><a href="#orcamento" class="btn btn-blue">Solicite seu orçamento agora!</a></div>
+<div class="social-group">
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/whatsapp.JPG' ?>"></a>
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/facebook.jpg' ?>"></a>
+	<a href="#"><img src="<?= get_template_directory_uri() . '/images/instagram.jpg' ?>"></a>
+</div>
+
 <?php if($page_quem_somos) : ?>
-<section class="quem-somos">
+<section class="quem-somos" id="quem-somos">
 	<div class="container">
 		<?php echo $page_quem_somos->post_content ?>
 	</div>
 </section>
 <?php endif; ?>
 
-<button type="button" class="btn btn-blue">Solicite seu orçamento agora!</button>
-<div class="social-group">
-	<a href="#"><img src="<?= get_template_directory_uri() . '/images/whatsapp.JPG' ?>"></a>
-	<a href="#"><img src="<?= get_template_directory_uri() . '/images/facebook.jpg' ?>"></a>
-	<a href="#"><img src="<?= get_template_directory_uri() . '/images/instagram.jpg' ?>"></a>
-</div>
 <?php if($servicos_posts->have_posts()) : $servicos_posts->the_post(); ?>
 <section class="nossos-servicos" id="nossos-servicos" style="<?php echo 'background-image: url(' . get_template_directory_uri() . '/images/bg-servicos.PNG);' ?>">
     <h1 class="nossos-servicos-titulo titulo-grande">Nossos serviços</h1>
@@ -75,7 +76,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 <?php endif; ?>
 
 <?php if ( $banners_antes_depois_posts -> have_posts() ) :  $banners_antes_depois_posts -> the_post(); ?>
-<section class="trabalhos-realizados">
+<section class="trabalhos-realizados" id="trabalhos-realizados">
 	<h2 class="titulo-grande">Trabalhos Realizados</h2>
 	<div class="container">
 		<div class="owl-carousel trabalhos-realizados-carousel">
@@ -98,7 +99,7 @@ $page_orcamento = get_page_by_path('faca-seu-orcamento');
 	</div>
 </section>
 <?php endif; ?>
-<section class="orcamento">
+<section class="orcamento" id="orcamento">
 	<div class="container-contato" id="fale">	
 	<h3 class="texto titulo-grande">FAÇA SEU ORÇAMENTO AGORA!</h3> 
     <div class="container">    
@@ -198,6 +199,8 @@ get_footer();
 					items: 1
 				}
 			},
+			video: true,
+			lazyLoad:true,
 			dots: true,
 			nav: false
 		});
