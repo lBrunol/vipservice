@@ -51,8 +51,8 @@
 					<i class="icon icon-phone"></i> <span>Contatos</span> <span class="bigger">·</span> (11) 96772-8616 <span class="bigger">·</span> (11) 2402-1104 <span class="bigger">·</span> (11) 94776-6398
 				</div>
 			</div>
-			<div class="col-md-2">
-				<button class="btn btn-white -smaller">Faça seu orçamento</button>
+			<div class="col-md-2 scroll">
+				<a href="#orcamento" class="btn btn-white -smaller">Faça seu orçamento</a>
 			</div>
 		</div>
 	</div>
@@ -67,13 +67,15 @@
 				$imagem = wp_get_attachment_image_src( get_post_thumbnail_id( $banner -> ID ), 'full' );
 				$nova_guia = !empty( get_post_meta( $banner -> ID, 'banner_target', true ) ) ? '_blank' : '_self';
 				$link = get_post_meta( $banner -> ID, 'banner_link', true );
-    			$position = get_post_meta( $banner -> ID, 'banner_position', true);
+				$position = get_post_meta( $banner -> ID, 'banner_position', true);
+				$content = get_the_content( $banner -> ID );
+				$initialPos = strpos($content,'http');
+				$finalPos = strpos($content,'"]');
+				$videoSrc = substr($content, $initialPos, $finalPos - $initialPos);
     			if ( $position == 'principal' || $position == 'principal-video' ) :
 			?>
 				<?php if($position == 'principal-video') : ?>
-					<div class="item-video">
-						<?php echo '<a class="owl-video" href="http://vipservice.dev.com.br/wp-content/uploads/2018/11/mov_bbb.mp4"></a>' ?>
-					</div>
+					<div class="item" data-videosrc="<?= $videoSrc ?>" data-postersrc="<?= $imagem[0]; ?>"></div>
 				<?php else : ?>
 					<div class="item">
 						<?php if ( !empty( $link ) ) : ?>

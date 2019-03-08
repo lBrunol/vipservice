@@ -193,23 +193,46 @@ get_footer();
 ?>
 <script>
 	$(function(){
-		$('.main-banner').owlCarousel({
+		var owl = $('.main-banner').owlCarousel({
 			responsive: {
 				0: {
 					items: 1
 				}
 			},
-			video: true,
-			lazyLoad:true,
 			dots: true,
 			nav: false
 		});
-
+		owl.on('translate.owl.carousel',function(e){
+			$('.owl-item video').each(function(){
+				$(this).get(0).pause();
+			});
+		});
+		owl.on('translated.owl.carousel',function(e){
+			var $video = $('.owl-item.active video');
+			if($video.length > 0){
+				$video.get(0).play();
+			}
+		})
+		if(!isMobile()){
+			$('.owl-item .item').each(function(){
+				var attr = $(this).attr('data-videosrc');
+				var $video = $('.owl-item.active video');			
+				if (typeof attr !== typeof undefined && attr !== false) {
+					var videosrc = $(this).attr('data-videosrc');
+					var postersrc = $(this).attr('data-postersrc');
+					$(this).prepend('<video muted poster="'+ postersrc +'"><source src="'+videosrc+'" type="video/mp4"></video>');
+				}
+				if($video.length > 0){
+					$video.attr('autoplay',true).attr('loop',true);
+				}
+			});
+		}
 		$('.trabalhos-realizados-carousel').owlCarousel({
 			loop:true,
 			margin:10,
 			nav: false,
 			dots: true,
+			autoHeight: true,
 			responsive:{
 				0:{
 					items:1
@@ -219,5 +242,15 @@ get_footer();
 				}
 			}
 		});
+		function isMobile(width) {
+			if(width == undefined){
+				width = 719;
+			}
+			if(window.innerWidth <= width) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	});
 </script>
